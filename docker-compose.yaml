@@ -3,10 +3,17 @@ volumes:
     external: true
   pg-admin:
     external: true
+  jwtdown-db-data:
+    external: true
 
 services:
   fastapi:
     environment:
+      SIGNING_KEY: e6aec892c8fc8d8106390af89d1eaaa675eef3c658994b3f9fe452263393f005ffad6472fa249e56fb06feab59d3bbd4ba2ccdac6d4ee895f0b074a4a202b251
+      WAIT_HOSTS: postgres:5432
+      WAIT_BEFORE: 5
+      WAIT_TIMEOUT: 60
+      PORT: 8000
       CORS_HOST: http://localhost:3000
       DATABASE_URL: postgresql://example_user:password@postgres/example_db
     build:
@@ -44,10 +51,10 @@ services:
     volumes:
       - ./ghi:/app
     ports:
-      - '3000:3000'
+      - "3000:3000"
     environment:
       HOST_OS: ${OS}
       NODE_ENV: development
-      HOST: '0.0.0.0'
+      HOST: "0.0.0.0"
       PUBLIC_URL: http://localhost:3000
       REACT_APP_API_HOST: ${REACT_APP_API_HOST}
