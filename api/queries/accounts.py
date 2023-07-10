@@ -40,8 +40,8 @@ class AccountRepository:
                           SELECT id
                             , username
                             , email
-                            , hashed_password
                             , avatar
+                            , hashed_password
                           FROM accounts
                           WHERE email = %s
                           """,
@@ -50,28 +50,29 @@ class AccountRepository:
                     record = result.fetchone()
                     if record is None:
                         return None
-                    return self.record_to_account_out(record)
+                    return self.record_to_account_out_with_pw(record)
         except Exception as e:
             print(e)
             return {"message": "Could not get that account"}
 
-    # def get_all_accounts(self) -> Union[Error, List[AccountOutWithPassword]]:
-    #     try:
-    #         with pool.connection() as conn:
-    #             with conn.cursor() as db:
-    #                 result = db.execute(
-    #                     """
-    #         SELECT id, username, email, hashed_password, avatar
-    #         FROM accounts
-    #         ORDER BY username;
-    #         """
-    #                 )
-    #                 return [
-    #                     self.record_to_account_out(record) for record in result
-    #                 ]
-    #     except Exception as e:
-    #         print(e)
-    #         return {"message": "Could not get all accounts"}
+    def get_all_accounts(self) -> Union[Error, List[AccountOut]]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+            SELECT id, username, email, avatar
+            FROM accounts
+            ORDER BY username;
+            """
+                    )
+                    return [
+                        self.record_to_account_out_without_pw(record)
+                        for record in result
+                    ]
+        except Exception as e:
+            print(e)
+            return {"message": "Could not get all accounts"}
 
     # def delete(self, account_id: int) -> bool:
     #     try:
@@ -124,7 +125,7 @@ class AccountRepository:
                 result = db.execute(
                     """
                           INSERT INTO accounts
-                            (username, email, hashed_password, avatar)
+                            (username, email, avatar, hashed_password)
                           VALUES
                             (%s, %s, %s, %s)
                           RETURNING id;
@@ -132,8 +133,8 @@ class AccountRepository:
                     [
                         account.username,
                         account.email,
-                        account.password,
                         account.avatar,
+                        hashed_password,
                     ],
                 )
                 id = result.fetchone()[0]
@@ -145,11 +146,19 @@ class AccountRepository:
         old_data = account.dict()
         return AccountOut(id=id, **old_data)
 
-    def record_to_account_out(self, record):
+    def record_to_account_out_with_pw(self, record):
+        return AccountOutWithPassword(
+            id=record[0],
+            username=record[1],
+            email=record[2],
+            avatar=record[3],
+            hashed_password=record[4],
+        )
+
+    def record_to_account_out_without_pw(self, record):
         return AccountOut(
             id=record[0],
             username=record[1],
             email=record[2],
-            # hashed_password=record[3],
             avatar=record[3],
         )
