@@ -103,7 +103,7 @@ def delete_account(
     return repo.delete(account_id)
 
 
-# requiring a valid token
+# requiring a valid token for accounts
 @router.post("/api/accounts/all")
 async def retreive_all_accounts(
     account_data: dict = Depends(authenticator.get_current_account_data),
