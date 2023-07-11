@@ -1,6 +1,6 @@
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
-from routers import accounts
+from routers import accounts, movies
 import os
 
 from jwtdownAPI.authenticator import authenticator
@@ -8,6 +8,7 @@ from jwtdownAPI.authenticator import authenticator
 app = FastAPI()
 app.include_router(accounts.router)
 app.include_router(authenticator.router)
+app.include_router(movies.router)
 
 app.add_middleware(
     CORSMiddleware,
