@@ -30,3 +30,20 @@ def search_title(string):
     return {"results": movie_list}
     # except (KeyError, IndexError):
     #     return None
+
+
+def get_title(id):
+    url = f"https://moviesdatabase.p.rapidapi.com/titles/{id}"
+    headers = {
+        "X-RapidAPI-Key": "0c68cc2274msh3b4f58594c8fe7ep16a643jsn9d4d20c7a58f",
+        "X-RapidAPI-Host": "moviesdatabase.p.rapidapi.com",
+    }
+    response = requests.get(url, headers=headers)
+
+    content = response.json()
+
+    return {
+        "image": content["results"]["primaryImage"]["url"],
+        "title": content["results"]["originalTitleText"]["text"],
+        "release_date": content["results"]["releaseDate"],
+    }
