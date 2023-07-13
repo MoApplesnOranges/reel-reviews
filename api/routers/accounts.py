@@ -35,6 +35,19 @@ class HttpError(BaseModel):
     detail: str
 
 
+@router.get("/token", response_model=AccountToken | None)
+async def get_token(
+    request: Request,
+    account: AccountIn = Depends(authenticator.try_get_current_account_data),
+) -> AccountToken | None:
+    if account and authenticator.cookie_name in request.cookies:
+        return {
+            "access_token": request.cookies[authenticator.cookie_name],
+            "type": "Bearer",
+            "account": account,
+        }
+
+
 @router.post("/api/accounts", response_model=AccountToken | HttpError)
 async def create_account(
     info: AccountIn,
@@ -51,6 +64,7 @@ async def create_account(
             detail="Cannot create an account with those credentials",
         )
     form = AccountForm(username=info.email, password=info.password)
+    print(form)
     token = await authenticator.login(response, request, form, repo)
     return AccountToken(account=account, **token.dict())
 
@@ -74,35 +88,6 @@ def get_one_account(
     return account
 
 
-@router.post("/accounts", response_model=Union[AccountOut, Error])
-def create_account(
-    account: AccountIn,
-    response: Response,
-    repo: AccountRepository = Depends(),
-):
-    created = repo.create(account)
-    if type(created) is dict:
-        response.status_code = 400
-    return created
-
-
-@router.put("/accounts/{account_id}", response_model=Union[AccountOut, Error])
-def update_account(
-    account_id: int,
-    account: AccountIn,
-    repo: AccountRepository = Depends(),
-) -> Union[Error, AccountOut]:
-    return repo.update(account_id, account)
-
-
-@router.delete("/accounts/{account_id}", response_model=bool)
-def delete_account(
-    account_id: int,
-    repo: AccountRepository = Depends(),
-) -> bool:
-    return repo.delete(account_id)
-
-
 # requiring a valid token for accounts
 @router.post("/api/accounts/all")
 async def retreive_all_accounts(
@@ -111,3 +96,32 @@ async def retreive_all_accounts(
 ):
     if account_data:
         return repo.get_all_accounts()
+
+
+# @router.post("/accounts", response_model=Union[AccountOut, Error])
+# def create_account(
+#     account: AccountIn,
+#     response: Response,
+#     repo: AccountRepository = Depends(),
+# ):
+#     created = repo.create(account)
+#     if type(created) is dict:
+#         response.status_code = 400
+#     return created
+
+
+# @router.put("/accounts/{account_id}", response_model=Union[AccountOut, Error])
+# def update_account(
+#     account_id: int,
+#     account: AccountIn,
+#     repo: AccountRepository = Depends(),
+# ) -> Union[Error, AccountOut]:
+#     return repo.update(account_id, account)
+
+
+# @router.delete("/accounts/{account_id}", response_model=bool)
+# def delete_account(
+#     account_id: int,
+#     repo: AccountRepository = Depends(),
+# ) -> bool:
+#     return repo.delete(account_id)
