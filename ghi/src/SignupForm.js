@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import useToken from '@galvanize-inc/jwtdown-for-react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 const SignupForm = () => {
   const [username, setUsername] = useState('');
@@ -8,8 +8,7 @@ const SignupForm = () => {
   const [email, setEmail] = useState('');
   const [avatar, setAvatar] = useState('');
   const { register } = useToken();
-  const navigate = useNavigate();
-  const { login } = useToken();
+  // const navigate = useNavigate();
 
   const handleRegistration = (e) => {
     e.preventDefault();
@@ -20,10 +19,10 @@ const SignupForm = () => {
       avatar: avatar,
     };
     register(accountData, `${process.env.REACT_APP_API_HOST}/api/accounts`);
-    login(username, password);
-    console.log(accountData);
+    // const username = email;
+    // login(accountData.email, accountData.password);
     e.target.reset();
-    navigate('/');
+    // navigate('/');
   };
 
   return (

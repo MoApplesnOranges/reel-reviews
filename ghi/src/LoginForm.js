@@ -2,13 +2,13 @@ import useToken from '@galvanize-inc/jwtdown-for-react';
 import { useState } from 'react';
 
 const LoginForm = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { login } = useToken();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const username = email;
+    // const username = email;
     login(username, password);
     e.target.reset();
   };
@@ -21,10 +21,10 @@ const LoginForm = () => {
           <div className='mb-3'>
             <label className='form-label'>Email:</label>
             <input
-              name='email'
+              name='username'
               type='text'
               className='form-control'
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </div>
           <div className='mb-3'>
