@@ -11,13 +11,13 @@ from queries.accounts import (
 class MyAuthenticator(Authenticator):
     async def get_account_data(
         self,
-        email: str,
+        username: str,
         accounts: AccountRepository,
     ):
         # Use your repo to get the account based on the
         # username (which could be an email)
 
-        return accounts.get_one_account(email)
+        return accounts.get_one_account(username)
 
     def get_account_getter(
         self,
@@ -35,7 +35,7 @@ class MyAuthenticator(Authenticator):
     def get_account_data_for_cookie(self, account: AccountOut):
         # Return the username and the data for the cookie.
         # You must return TWO values from this method.
-        return account.email, AccountOut(**account.dict())
+        return account.username, AccountOut(**account.dict())
 
 
 authenticator = MyAuthenticator(os.environ["SIGNING_KEY"])

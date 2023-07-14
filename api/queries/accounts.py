@@ -22,7 +22,6 @@ class AccountOut(BaseModel):
     id: int
     username: str
     email: str
-    # hashed_password: str
     avatar: Optional[str]
 
 
@@ -31,7 +30,35 @@ class AccountOutWithPassword(AccountOut):
 
 
 class AccountRepository:
-    def get_one_account(self, email: str) -> Optional[AccountOutWithPassword]:
+    def create(
+        self, account: AccountIn, hashed_password: str
+    ) -> Union[AccountOutWithPassword, Error]:
+        # try:
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                result = db.execute(
+                    """
+                          INSERT INTO accounts
+                            (username, email, avatar, hashed_password)
+                          VALUES
+                            (%s, %s, %s, %s)
+                          RETURNING id;
+                          """,
+                    [
+                        account.username,
+                        account.email,
+                        account.avatar,
+                        hashed_password,
+                    ],
+                )
+                id = result.fetchone()[0]
+                return self.account_in_to_out(id, account)
+        # except Exception:
+        # return {"message": "Create did not work"}
+
+    def get_one_account(
+        self, username: str
+    ) -> Optional[AccountOutWithPassword]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -43,9 +70,9 @@ class AccountRepository:
                             , avatar
                             , hashed_password
                           FROM accounts
-                          WHERE email = %s
+                          WHERE username = %s
                           """,
-                        [email],
+                        [username],
                     )
                     record = result.fetchone()
                     if record is None:
@@ -115,32 +142,6 @@ class AccountRepository:
     #                 return self.account_in_to_out(account_id, account)
     #     except Exception:
     #         return {"message": "Could not update that account"}
-
-    def create(
-        self, account: AccountIn, hashed_password: str
-    ) -> Union[AccountOutWithPassword, Error]:
-        # try:
-        with pool.connection() as conn:
-            with conn.cursor() as db:
-                result = db.execute(
-                    """
-                          INSERT INTO accounts
-                            (username, email, avatar, hashed_password)
-                          VALUES
-                            (%s, %s, %s, %s)
-                          RETURNING id;
-                          """,
-                    [
-                        account.username,
-                        account.email,
-                        account.avatar,
-                        hashed_password,
-                    ],
-                )
-                id = result.fetchone()[0]
-                return self.account_in_to_out(id, account)
-        # except Exception:
-        # return {"message": "Create did not work"}
 
     def account_in_to_out(self, id: int, account: AccountIn):
         old_data = account.dict()

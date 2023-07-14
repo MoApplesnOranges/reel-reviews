@@ -1,35 +1,38 @@
-import { useEffect, useState } from "react";
-import Construct from "./Construct.js";
-import ErrorNotification from "./ErrorNotification";
-import "./App.css";
+import { useEffect, useState } from 'react';
+import { AuthProvider } from '@galvanize-inc/jwtdown-for-react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import './App.css';
+import SignupForm from './SignupForm.js';
+import LoginForm from './LoginForm.js';
+import MainPage from './MainPage.js';
+
+// function setToken(userToken) {
+//   sessionStorage.setItem('token', JSON.stringify(userToken));
+// }
+
+// function getToken() {
+//   const tokenString = sessionStorage.getItem('token');
+//   const userToken = JSON.parse(tokenString);
+//   return userToken?.token;
+// }
 
 function App() {
-  const [launchInfo, setLaunchInfo] = useState([]);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    async function getData() {
-      let url = `${process.env.REACT_APP_API_HOST}/api/launch-details`;
-      console.log("fastapi url: ", url);
-      let response = await fetch(url);
-      console.log("------- hello? -------");
-      let data = await response.json();
-
-      if (response.ok) {
-        console.log("got launch data!");
-        setLaunchInfo(data.launch_details);
-      } else {
-        console.log("drat! something happened");
-        setError(data.message);
-      }
-    }
-    getData();
-  }, []);
+  // const token = getToken();
+  // const domain = /https:\/\/[^/]+/;
+  // const basename = process.env.PUBLIC_URL.replace(domain, '');
+  const baseURL = process.env.REACT_APP_API_HOST;
 
   return (
-    <div>
-      <ErrorNotification error={error} />
-      <Construct info={launchInfo} />
+    <div className='container'>
+      <BrowserRouter>
+        <AuthProvider baseUrl={baseURL}>
+          <Routes>
+            <Route path='/' element={<MainPage />} />
+            <Route path='/signup' element={<SignupForm />} />
+            <Route path='/login' element={<LoginForm />} />
+          </Routes>
+        </AuthProvider>
+      </BrowserRouter>
     </div>
   );
 }
