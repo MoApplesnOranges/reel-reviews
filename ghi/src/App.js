@@ -18,9 +18,9 @@ import MainPage from './MainPage.js';
 
 function App() {
   // const token = getToken();
-  const baseURL = process.env.REACT_APP_API_HOST;
   // const domain = /https:\/\/[^/]+/;
   // const basename = process.env.PUBLIC_URL.replace(domain, '');
+  const baseURL = process.env.REACT_APP_API_HOST;
 
   return (
     <div className='container'>
