@@ -63,30 +63,11 @@ async def create_account(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Cannot create an account with those credentials",
         )
-    form = AccountForm(username=info.email, password=info.password)
+    form = AccountForm(username=info.username, password=info.password)
     print(form)
     token = await authenticator.login(response, request, form, repo)
     print(token)
     return AccountToken(account=account, **token.dict())
-
-
-@router.get("/accounts", response_model=Union[List[AccountOut], Error])
-def get_all_accounts(
-    repo: AccountRepository = Depends(),
-):
-    return repo.get_all_accounts()
-
-
-@router.get("/accounts/{account_id}", response_model=Optional[AccountOut])
-def get_one_account(
-    account_id: int,
-    response: Response,
-    repo: AccountRepository = Depends(),
-) -> AccountOut:
-    account = repo.get_one_account(account_id)
-    if account is None:
-        response.status_code = 404
-    return account
 
 
 # requiring a valid token for accounts
@@ -97,6 +78,25 @@ async def retreive_all_accounts(
 ):
     if account_data:
         return repo.get_all_accounts()
+
+
+# @router.get("/accounts/{account_id}", response_model=Optional[AccountOut])
+# def get_one_account(
+#     account_id: int,
+#     response: Response,
+#     repo: AccountRepository = Depends(),
+# ) -> AccountOut:
+#     account = repo.get_one_account(account_id)
+#     if account is None:
+#         response.status_code = 404
+#     return account
+
+
+# @router.get("/accounts", response_model=Union[List[AccountOut], Error])
+# def get_all_accounts(
+#     repo: AccountRepository = Depends(),
+# ):
+#     return repo.get_all_accounts()
 
 
 # @router.post("/accounts", response_model=Union[AccountOut, Error])

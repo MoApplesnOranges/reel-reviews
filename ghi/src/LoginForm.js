@@ -8,7 +8,6 @@ const LoginForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // const username = email;
     login(username, password);
     e.target.reset();
   };
@@ -19,7 +18,7 @@ const LoginForm = () => {
       <div className='card-body'>
         <form onSubmit={(e) => handleSubmit(e)}>
           <div className='mb-3'>
-            <label className='form-label'>Email:</label>
+            <label className='form-label'>Username:</label>
             <input
               name='username'
               type='text'
