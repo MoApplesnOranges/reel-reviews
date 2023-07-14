@@ -4,29 +4,24 @@ import requests
 
 
 def search_title(string):
-    querystring = {
-        "exact": "true",
-        "titleType": "movie",
-    }
-    url = f"https://moviesdatabase.p.rapidapi.com/titles/search/title/{string}"
-    headers = {
-        "X-RapidAPI-Key": "0c68cc2274msh3b4f58594c8fe7ep16a643jsn9d4d20c7a58f",
-        "X-RapidAPI-Host": "moviesdatabase.p.rapidapi.com",
-    }
-    response = requests.get(url, headers=headers, params=querystring)
-    content = response.json()
-    # try:
-    movie_list = []
-    for movie in content["results"]:
-        image = movie["primaryImage"]
-        if image != None:
-            films = {
-                "image": movie["primaryImage"]["url"],
-                "title": movie["originalTitleText"]["text"],
-                "release_year": movie["releaseDate"]["year"],
-            }
+    url = f"http://www.omdbapi.com/?s={string}&type=movie&apikey=82116a62"
+    response = requests.get(url)
+    if response.status_code == 200:
+        content = response.json()
+        return content
 
-            movie_list.append(films)
-    return {"results": movie_list}
-    # except (KeyError, IndexError):
-    #     return None
+
+def get_title(id):
+    url = f"http://www.omdbapi.com/?i={id}&apikey=82116a62"
+    response = requests.get(url)
+    if response.status_code == 200:
+        content = response.json()
+        return content
+
+
+# def get_new_releases(year):
+#     url = f"http://www.omdbapi.com/?y={year}&s=''&r=json&type=movie&apikey=82116a62"
+#     response = requests.get(url)
+#     if response.status_code == 200:
+#         content = response.json()
+#         return content
