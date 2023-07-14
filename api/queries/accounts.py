@@ -68,7 +68,6 @@ class AccountRepository:
                             , username
                             , email
                             , avatar
-                            , hashed_password
                           FROM accounts
                           WHERE username = %s
                           """,
@@ -77,7 +76,7 @@ class AccountRepository:
                     record = result.fetchone()
                     if record is None:
                         return None
-                    return self.record_to_account_out_with_pw(record)
+                    return self.record_to_account_out_without_pw(record)
         except Exception as e:
             print(e)
             return {"message": "Could not get that account"}

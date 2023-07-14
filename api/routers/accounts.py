@@ -80,35 +80,20 @@ async def retreive_all_accounts(
         return repo.get_all_accounts()
 
 
-# @router.get("/accounts/{account_id}", response_model=Optional[AccountOut])
-# def get_one_account(
-#     account_id: int,
-#     response: Response,
-#     repo: AccountRepository = Depends(),
-# ) -> AccountOut:
-#     account = repo.get_one_account(account_id)
-#     if account is None:
-#         response.status_code = 404
-#     return account
-
-
-# @router.get("/accounts", response_model=Union[List[AccountOut], Error])
-# def get_all_accounts(
-#     repo: AccountRepository = Depends(),
-# ):
-#     return repo.get_all_accounts()
-
-
-# @router.post("/accounts", response_model=Union[AccountOut, Error])
-# def create_account(
-#     account: AccountIn,
-#     response: Response,
-#     repo: AccountRepository = Depends(),
-# ):
-#     created = repo.create(account)
-#     if type(created) is dict:
-#         response.status_code = 400
-#     return created
+@router.get(
+    "/api/accounts/{account_username}", response_model=Optional[AccountOut]
+)
+def get_one_account(
+    account_username: str,
+    response: Response,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+    repo: AccountRepository = Depends(),
+) -> AccountOut:
+    account = repo.get_one_account(account_username)
+    if account is None:
+        response.status_code = 404
+    elif account_data:
+        return account
 
 
 # @router.put("/accounts/{account_id}", response_model=Union[AccountOut, Error])
