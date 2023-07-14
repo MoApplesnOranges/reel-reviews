@@ -101,47 +101,49 @@ class AccountRepository:
             print(e)
             return {"message": "Could not get all accounts"}
 
-    # def delete(self, account_id: int) -> bool:
-    #     try:
-    #         with pool.connection() as conn:
-    #             with conn.cursor() as db:
-    #                 db.execute(
-    #                     """
-    #                     DELETE FROM accounts
-    #                     WHERE id = %s
-    #                     """,
-    #                     [account_id],
-    #                 )
-    #                 return True
-    #     except Exception:
-    #         return False
+    def delete(self, account_id: int) -> bool:
+        # try:
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                db.execute(
+                    """
+                        DELETE FROM accounts
+                        WHERE id = %s
+                        """,
+                    [account_id],
+                )
+                return True
 
-    # def update(
-    #     self, account_id: int, account: AccountIn
-    # ) -> Union[AccountOut, Error]:
-    #     try:
-    #         with pool.connection() as conn:
-    #             with conn.cursor() as db:
-    #                 db.execute(
-    #                     """
-    #                     UPDATE accounts
-    #                     SET username = %s
-    #                       , email = %s
-    #                       , password = %s
-    #                       , avatar = %s
-    #                     WHERE id = %s
-    #                     """,
-    #                     [
-    #                         account.username,
-    #                         account.email,
-    #                         account.password,
-    #                         account.avatar,
-    #                         account_id,
-    #                     ],
-    #                 )
-    #                 return self.account_in_to_out(account_id, account)
-    #     except Exception:
-    #         return {"message": "Could not update that account"}
+    # except Exception:
+    #     return False
+
+    def update(
+        self, account_id: int, account: AccountIn
+    ) -> Union[AccountOut, Error]:
+        # try:
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                db.execute(
+                    """
+                        UPDATE accounts
+                        SET username = %s
+                          , email = %s
+                          , password = %s
+                          , avatar = %s
+                        WHERE id = %s
+                        """,
+                    [
+                        account.username,
+                        account.email,
+                        account.password,
+                        account.avatar,
+                        account_id,
+                    ],
+                )
+                return self.account_in_to_out(account_id, account)
+
+    # except Exception:
+    #     return {"message": "Could not update that account"}
 
     def account_in_to_out(self, id: int, account: AccountIn):
         old_data = account.dict()

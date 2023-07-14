@@ -120,9 +120,11 @@ async def retreive_all_accounts(
 #     return repo.update(account_id, account)
 
 
-# @router.delete("/accounts/{account_id}", response_model=bool)
-# def delete_account(
-#     account_id: int,
-#     repo: AccountRepository = Depends(),
-# ) -> bool:
-#     return repo.delete(account_id)
+@router.delete("/api/accounts/{account_id}", response_model=bool)
+def delete_account(
+    account_id: int,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+    repo: AccountRepository = Depends(),
+) -> bool:
+    if account_data:
+        return repo.delete(account_id)
