@@ -11,6 +11,13 @@ class Error(BaseModel):
     message: str
 
 
+class AccountUpdate(BaseModel):
+    username: Optional[str]
+    email: Optional[str]
+    password: Optional[str]
+    avatar: Optional[str]
+
+
 class AccountIn(BaseModel):
     username: str
     email: str
@@ -55,6 +62,33 @@ class AccountRepository:
                 return self.account_in_to_out(id, account)
         # except Exception:
         # return {"message": "Create did not work"}
+
+    def update(
+        self, account_id: int, account: AccountUpdate, hashed_password: str
+    ) -> Union[AccountOutWithPassword, Error]:
+        # try:
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                db.execute(
+                    """
+                    UPDATE accounts
+                    SET username = %s
+                        , email = %s
+                        , hashed_password = %s
+                        , avatar = %s
+                    WHERE id = %s
+                    """,
+                    [
+                        account.username,
+                        account.email,
+                        hashed_password,
+                        account.avatar,
+                        account_id,
+                    ],
+                )
+                return self.updated_account_in_to_out(account_id, account)
+        # except Exception:
+        #     return {"message": "Could not update that account"}
 
     def get_one_account(
         self, username: str
@@ -116,32 +150,9 @@ class AccountRepository:
         except Exception:
             return False
 
-    # def update(
-    #     self, account_id: int, account: AccountIn
-    # ) -> Union[AccountOut, Error]:
-    #     try:
-    #         with pool.connection() as conn:
-    #             with conn.cursor() as db:
-    #                 db.execute(
-    #                     """
-    #                     UPDATE accounts
-    #                     SET username = %s
-    #                       , email = %s
-    #                       , password = %s
-    #                       , avatar = %s
-    #                     WHERE id = %s
-    #                     """,
-    #                     [
-    #                         account.username,
-    #                         account.email,
-    #                         account.password,
-    #                         account.avatar,
-    #                         account_id,
-    #                     ],
-    #                 )
-    #                 return self.account_in_to_out(account_id, account)
-    #     except Exception:
-    #         return {"message": "Could not update that account"}
+    def updated_account_in_to_out(self, id: int, account: AccountUpdate):
+        old_data = account.dict()
+        return AccountOut(id=id, **old_data)
 
     def account_in_to_out(self, id: int, account: AccountIn):
         old_data = account.dict()

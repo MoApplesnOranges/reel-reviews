@@ -96,13 +96,18 @@ def get_one_account(
         return account
 
 
-# @router.put("/accounts/{account_id}", response_model=Union[AccountOut, Error])
-# def update_account(
-#     account_id: int,
-#     account: AccountIn,
-#     repo: AccountRepository = Depends(),
-# ) -> Union[Error, AccountOut]:
-#     return repo.update(account_id, account)
+@router.put(
+    "/api/accounts/{account_id}", response_model=Union[AccountOut, Error]
+)
+def update_account(
+    account_id: int,
+    account: AccountIn,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+    repo: AccountRepository = Depends(),
+) -> Union[AccountOut, Error]:
+    hashed_password = authenticator.hash_password(account.password)
+    if account_data:
+        return repo.update(account_id, account, hashed_password)
 
 
 @router.delete("/api/accounts/{account_id}", response_model=bool)
