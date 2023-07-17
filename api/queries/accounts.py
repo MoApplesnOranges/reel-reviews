@@ -101,20 +101,20 @@ class AccountRepository:
             print(e)
             return {"message": "Could not get all accounts"}
 
-    # def delete(self, account_id: int) -> bool:
-    #     try:
-    #         with pool.connection() as conn:
-    #             with conn.cursor() as db:
-    #                 db.execute(
-    #                     """
-    #                     DELETE FROM accounts
-    #                     WHERE id = %s
-    #                     """,
-    #                     [account_id],
-    #                 )
-    #                 return True
-    #     except Exception:
-    #         return False
+    def delete(self, account_id: int) -> bool:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        DELETE FROM accounts
+                        WHERE id = %s
+                        """,
+                        [account_id],
+                    )
+                    return True
+        except Exception:
+            return False
 
     # def update(
     #     self, account_id: int, account: AccountIn
