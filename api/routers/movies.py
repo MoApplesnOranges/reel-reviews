@@ -6,7 +6,12 @@ from fastapi import (
     status,
     Request,
 )
-from Movie_Api.omdb import search_title, get_title, get_new_releases
+from Movie_Api.omdb import (
+    get_new_releases,
+    search_title,
+    get_title,
+    get_movies_by_genre,
+)
 from queries.movies import MovieIn
 
 router = APIRouter()
@@ -23,5 +28,10 @@ async def get_title_id(id: str):
 
 
 @router.get("/api/movie/new_release")
-async def get_new_release(year: str):
-    return get_new_releases(year)
+async def get_new_release():
+    return get_new_releases()
+
+
+# @router.get("/api/movie/genre")
+# async def get_genre(genre_id: int):
+#     return get_movies_by_genre(genre_id)
