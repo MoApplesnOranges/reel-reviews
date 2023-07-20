@@ -45,12 +45,12 @@ class AccountRepository:
             with conn.cursor() as db:
                 result = db.execute(
                     """
-                          INSERT INTO accounts
+                        INSERT INTO accounts
                             (username, email, avatar, hashed_password)
-                          VALUES
+                        VALUES
                             (%s, %s, %s, %s)
-                          RETURNING id;
-                          """,
+                        RETURNING id;
+                        """,
                     [
                         account.username,
                         account.email,
@@ -98,14 +98,14 @@ class AccountRepository:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
-                          SELECT id
+                        SELECT id
                             , username
                             , email
                             , avatar
                             , hashed_password
-                          FROM accounts
-                          WHERE username = %s
-                          """,
+                        FROM accounts
+                        WHERE username = %s
+                        """,
                         [username],
                     )
                     record = result.fetchone()
@@ -122,10 +122,10 @@ class AccountRepository:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
-            SELECT id, username, email, avatar
-            FROM accounts
-            ORDER BY username;
-            """
+                        SELECT id, username, email, avatar
+                        FROM accounts
+                        ORDER BY username;
+                        """
                     )
                     return [
                         self.record_to_account_out_without_pw(record)

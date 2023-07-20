@@ -71,8 +71,8 @@ async def create_account(
 
 
 # requiring a valid token for accounts
-@router.post("/api/accounts/all")
-async def retreive_all_accounts(
+@router.get("/api/accounts/all")
+async def retrieve_all_accounts(
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: AccountRepository = Depends(),
 ):
@@ -83,7 +83,7 @@ async def retreive_all_accounts(
 @router.get(
     "/api/accounts/{account_username}", response_model=Optional[AccountOut]
 )
-def get_one_account(
+async def get_one_account(
     account_username: str,
     response: Response,
     account_data: dict = Depends(authenticator.get_current_account_data),
@@ -99,7 +99,7 @@ def get_one_account(
 @router.put(
     "/api/accounts/{account_id}", response_model=Union[AccountOut, Error]
 )
-def update_account(
+async def update_account(
     account_id: int,
     account: AccountIn,
     account_data: dict = Depends(authenticator.get_current_account_data),
@@ -111,7 +111,7 @@ def update_account(
 
 
 @router.delete("/api/accounts/{account_id}", response_model=bool)
-def delete_account(
+async def delete_account(
     account_id: int,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: AccountRepository = Depends(),
