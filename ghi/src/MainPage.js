@@ -1,10 +1,25 @@
+import "./index.css";
+import SearchMovies from "./searchMovies";
+import MovieGenres from "./Genres";
+import NewReleasesList from "./NewReleasesList";
+import TopRatedList from "./TopRatedList";
+
 function MainPage() {
   return (
-    <div className='px-4 py-5 my-5 text-center'>
-      <h1 className='display-5 fw-bold'>Reel Reviews</h1>
-      <div className='col-lg-6 mx-auto'>
-        <p className='lead mb-4'>Test</p>
+    <div className="back-color">
+      <h1 className="display-5 fw-bold text-center text-light">Reel Reviews</h1>
+      <div className="wrapper">
+        <SearchMovies />
       </div>
+      <div>
+        <NewReleasesList />
+      </div>
+      <div>
+        <TopRatedList />
+        {/* <MovieGenres /> */}
+      </div>
+      <div>{/* <NewReleasesList /> */}</div>
+      <div>{/* <TopRatedList /> */}</div>
     </div>
   );
 }
