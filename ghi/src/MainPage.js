@@ -10,6 +10,12 @@ function MainPage() {
       <h1 className="display-5 fw-bold text-center text-light">Reel Reviews</h1>
       <div className="wrapper">
         <SearchMovies />
+      </div>
+      <div>
+        <NewReleasesList />
+      </div>
+      <div>
+        <TopRatedList />
         {/* <MovieGenres /> */}
       </div>
       <div>{/* <NewReleasesList /> */}</div>

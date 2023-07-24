@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./index.css";
 
 function NewReleasesList() {
@@ -30,13 +31,13 @@ function NewReleasesList() {
               key={movie.id}
               className="col d-flex justify-content-start m-1"
             >
-              {movie.poster_path && (
+              <Link to={`/movie/${movie.id}`}>
                 <img
                   src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
                   alt={movie.title}
                   className="card"
                 />
-              )}
+              </Link>
             </div>
           ))}
         </div>

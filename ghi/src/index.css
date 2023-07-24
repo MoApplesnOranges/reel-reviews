@@ -56,3 +56,34 @@ h1 {
   overflow: auto;
   flex-wrap: nowrap;
 }
+
+.card:hover,
+.card.search-images:hover {
+  border-color: blue;
+  box-shadow: rgba(0, 34, 255, 0.946);
+}
+
+.row {
+  height: 307px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.header {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.detail-container {
+  display: flex;
+}
+
+.poster-left,
+.detail-right {
+  flex: 1;
+  background: rgba(0, 0, 0);
+}
+
+.card.details {
+  width: 400px;
+}

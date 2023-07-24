@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./index.css";
 
 function TopRatedList() {
@@ -21,7 +22,7 @@ function TopRatedList() {
   return (
     <>
       <div>
-        <h2 className="text-center text-light">Top Rated</h2>
+        <h2 className="text-center text-light header">Top Rated</h2>
       </div>
       <div className="container-fluid movie-row">
         <div className="row">
@@ -30,13 +31,14 @@ function TopRatedList() {
               key={movie.id}
               className="col d-flex justify-content-start m-1"
             >
-              {movie.poster_path && (
+              <Link to={`/movie/${movie.id}`}>
                 <img
+                  key={movie.id}
                   src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
                   alt={movie.title}
                   className="card"
                 />
-              )}
+              </Link>
             </div>
           ))}
         </div>

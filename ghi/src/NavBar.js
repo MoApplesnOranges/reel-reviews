@@ -1,5 +1,5 @@
 import "./index.css";
-import { Link, NavLink, Navigate } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import React from "react";
 import { Dropdown } from "react-bootstrap";
 
@@ -28,7 +28,7 @@ function Nav() {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <div className="row">
+          <div className="rows">
             <ul className="navbar-nav">
               <li className="navbar-item">
                 <Dropdown>

@@ -25,6 +25,7 @@ import TVMovie from "./genres/tvMovie";
 import Thriller from "./genres/thriller";
 import War from "./genres/war";
 import Western from "./genres/western";
+import MovieDetails from "./MovieDetails";
 
 function App(props) {
   const baseURL = process.env.REACT_APP_API_HOST;
@@ -60,6 +61,7 @@ function App(props) {
             <Route path="/" element={<MainPage />} />
             <Route path="/signup" element={<SignupForm />} />
             <Route path="/login" element={<LoginForm />} />
+            <Route path="/movie/:movie_id" element={<MovieDetails />} />
             <Route
               path="/genres/action"
               element={<Action actionData={props.action} />}
