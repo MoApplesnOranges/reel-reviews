@@ -33,7 +33,7 @@ class CreateQueries:
             "body": "lots of fun",
             "posted_time": "2023-07-24T21:39:41.618000+00:00",
             "rating": True,
-            "movie_id": "tt0137523",
+            "movie_id": "0137523",
             "account_id": 1,
             "id": 1,
         }
@@ -67,7 +67,7 @@ def test_create_review():
         "body": "lots of fun",
         "posted_time": "2023-07-24T21:39:41.618000+00:00",
         "rating": True,
-        "movie_id": "tt0137523",
+        "movie_id": "0137523",
         "account_id": 1,
     }
     expected = {
@@ -75,7 +75,7 @@ def test_create_review():
         "body": "lots of fun",
         "posted_time": "2023-07-24T21:39:41.618000+00:00",
         "rating": True,
-        "movie_id": "tt0137523",
+        "movie_id": "0137523",
         "account_id": 1,
         "id": 1,
     }

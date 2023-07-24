@@ -13,7 +13,7 @@ class ReviewIn(BaseModel):
     body: str
     posted_time: datetime
     rating: bool
-    movie_id: str
+    movie_id: int
     account_id: int
 
 
@@ -22,7 +22,7 @@ class ReviewOut(ReviewIn):
 
 
 class ReviewRepository:
-    def create(self, review: ReviewIn, movie_id: str) -> ReviewOut:
+    def create(self, review: ReviewIn, movie_id: int) -> ReviewOut:
         with pool.connection() as conn:
             with conn.cursor() as db:
                 result = db.execute(

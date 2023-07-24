@@ -23,7 +23,7 @@ router = APIRouter()
 @router.post("/api/movie/{movie_id}/review", response_model=ReviewOut)
 async def create_review(
     info: ReviewIn,
-    movie_id: str,
+    movie_id: int,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: ReviewRepository = Depends(),
 ):
