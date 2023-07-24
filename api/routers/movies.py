@@ -6,7 +6,7 @@ from fastapi import (
     status,
     Request,
 )
-from Movie_API.omdb import (
+from Movie_Api.omdb import (
     get_new_releases,
     search_title,
     get_title,
