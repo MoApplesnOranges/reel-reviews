@@ -1,5 +1,6 @@
 import React from "react";
 import "../index.css";
+import { Link } from "react-router-dom";
 
 const Adventure = (props) => {
   const genres = {
@@ -27,7 +28,7 @@ const Adventure = (props) => {
   const genre_list = [];
 
   for (let movie of props.adventureData.results) {
-    genre_list.push(movie.poster_path);
+    genre_list.push(movie);
   }
 
   return (
@@ -39,11 +40,13 @@ const Adventure = (props) => {
         <div className="grid">
           {genre_list.map((movie, index) => (
             <div key={index} className="cell">
-              <img
-                src={`https://image.tmdb.org/t/p/w200${movie}`}
-                alt="poster"
-                className="card"
-              ></img>
+              <Link to={`/movie/${movie.id}`}>
+                <img
+                  src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+                  alt="poster"
+                  className="card"
+                ></img>
+              </Link>
             </div>
           ))}
         </div>
