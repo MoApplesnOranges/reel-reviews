@@ -1,9 +1,40 @@
 import "./index.css";
 import { Link, NavLink } from "react-router-dom";
-import React from "react";
+import React, { useState, useEffect }from "react";
 import { Dropdown } from "react-bootstrap";
 
 function Nav() {
+
+  const [ Hidelogin, setHidelogin] = useState(false)
+  const [Data, setData] = useState('')
+  const handleHide = () => {setHidelogin(!Hidelogin);}
+  // useEffect(() => {
+  //   const interval = setInterval(async () => {
+  //     const url = "http://localhost:8000/token"
+  //     const response = await fetch(url)
+  //     const tokenData = await response.json()
+  //     setData(tokenData)
+  //   }, 1000);
+
+  //   return () => clearInterval(interval)
+
+  // },[])
+  const fetchToken = async () => {
+    const url = "http://localhost:8000/token"
+    const response = await fetch(url)
+    const tokenData = await response.json()
+    setData(tokenData)
+  }
+  fetchToken();
+  handleHide();
+
+  if (Data.access_token) {
+    setHidelogin(!Hidelogin)
+  }
+  else {
+    setHidelogin(Hidelogin)
+  }
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-success ">
       <div className="container-fluid">
@@ -96,36 +127,15 @@ function Nav() {
                   </Dropdown.Menu>
                 </Dropdown>
               </li>
-              {/* <li className="navbar-item">
-                <Dropdown>
-                  <Dropdown.Toggle variant="success" id="dropdown-sales">
-                    Sales
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item as={Link} to="/salespeople">
-                      Salespeople
-                    </Dropdown.Item>
-                    <Dropdown.Item as={Link} to="/salespeople/new">
-                      Add a Salesperson
-                    </Dropdown.Item>
-                    <Dropdown.Item as={Link} to="/customers">
-                      Customers
-                    </Dropdown.Item>
-                    <Dropdown.Item as={Link} to="/customers/new">
-                      Add a Customer
-                    </Dropdown.Item>
-                    <Dropdown.Item as={Link} to="/sales">
-                      Sales
-                    </Dropdown.Item>
-                    <Dropdown.Item as={Link} to="/sales/new">
-                      Add a Sale
-                    </Dropdown.Item>
-                    <Dropdown.Item as={Link} to="/sales/history">
-                      Salesperson History
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </li> */}
+              <li className="navbar-item" variant="success">
+                {Hidelogin === true && <NavLink to="/signup">Signup</NavLink>}
+              </li>
+              <li className="navbar-item" variant="success">
+                {Hidelogin === true && <NavLink to="/login">Login</NavLink>}
+              </li>
+              <li className="navbar-item">
+                {Hidelogin === false && <NavLink to="/logout">Logout</NavLink>}
+              </li>
               {/* <li className="navbar-item">
                 <Dropdown>
                   <Dropdown.Toggle variant="success" id="dropdown-service">
