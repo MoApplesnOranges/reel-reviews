@@ -1,39 +1,58 @@
 import "./index.css";
-import { Link, NavLink } from "react-router-dom";
-import React, { useState, useEffect }from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import { Dropdown } from "react-bootstrap";
 
 function Nav() {
+  const [Hidelogin, setHidelogin] = useState(false);
+  const [Data, setData] = useState("");
+  const navigate = useNavigate();
 
-  const [ Hidelogin, setHidelogin] = useState(false)
-  const [Data, setData] = useState('')
-  const handleHide = () => {setHidelogin(!Hidelogin);}
-  // useEffect(() => {
-  //   const interval = setInterval(async () => {
-  //     const url = "http://localhost:8000/token"
-  //     const response = await fetch(url)
-  //     const tokenData = await response.json()
-  //     setData(tokenData)
-  //   }, 1000);
+  useEffect(() => {
+    const fetchToken = async () => {
+      const url = "http://localhost:8000/token";
+      const fetchConfig = {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const response = await fetch(url, fetchConfig);
+      const tokenData = await response.json();
+      if (tokenData === null) {
+        //  setData(tokenData);
+        setHidelogin(true);
+        console.log("logged out");
+      } else {
+        setHidelogin(false);
+        console.log("logged in");
+      }
+    };
+    fetchToken();
+  }, [Hidelogin]);
 
-  //   return () => clearInterval(interval)
+  const handleLogout = async () => {
+    const url = "http://localhost:8000/token";
+    const fetchConfig = {
+      method: "DELETE",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await fetch(url, fetchConfig);
+    if (response.ok) {
+      console.log("successfully logged out");
+    }
+  };
 
-  // },[])
-  const fetchToken = async () => {
-    const url = "http://localhost:8000/token"
-    const response = await fetch(url)
-    const tokenData = await response.json()
-    setData(tokenData)
-  }
-  fetchToken();
-  handleHide();
-
-  if (Data.access_token) {
-    setHidelogin(!Hidelogin)
-  }
-  else {
-    setHidelogin(Hidelogin)
-  }
+  const handleClickHome = async () => {
+    handleLogout().then(() => {
+      navigate("/");
+      window.location.reload();
+    });
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-success ">
@@ -134,7 +153,9 @@ function Nav() {
                 {Hidelogin === true && <NavLink to="/login">Login</NavLink>}
               </li>
               <li className="navbar-item">
-                {Hidelogin === false && <NavLink to="/logout">Logout</NavLink>}
+                {Hidelogin === false && (
+                  <NavLink onClick={handleClickHome}>Logout</NavLink>
+                )}
               </li>
               {/* <li className="navbar-item">
                 <Dropdown>
