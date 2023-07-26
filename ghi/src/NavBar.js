@@ -5,7 +5,6 @@ import { Dropdown } from "react-bootstrap";
 import TokenContext from "./TokenContext";
 
 function Nav() {
-  // const [Hidelogin, setHidelogin] = useState(false);
   const [Hidelogin, setHidelogin] = useContext(TokenContext);
   const [Data, setData] = useState("");
   const navigate = useNavigate();
@@ -23,7 +22,6 @@ function Nav() {
       const response = await fetch(url, fetchConfig);
       const tokenData = await response.json();
       if (tokenData === null) {
-        //  setData(tokenData);
         setHidelogin(true);
         console.log("logged out");
       } else {
@@ -161,18 +159,6 @@ function Nav() {
                   <NavLink to="/logout">Logout</NavLink>
                 )}
               </li>
-              {/* <li className="navbar-item">
-                {Hidelogin && <NavLink to="/signup">Signup</NavLink>}
-              </li>
-              <li className="navbar-item">
-                {Hidelogin && <NavLink to="/login">Login</NavLink>}
-              </li>
-              :
-              <li className="navbar-item">
-                {!Hidelogin && (
-                  <NavLink to="/logout">Logout</NavLink>
-                )}
-              </li> */}
               {/* <li className="navbar-item">
                 <Dropdown>
                   <Dropdown.Toggle variant="success" id="dropdown-service">
