@@ -1,24 +1,26 @@
 import useToken from "@galvanize-inc/jwtdown-for-react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import SharedStateContext from "./context";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useToken();
   const navigate = useNavigate();
+  const { Hidelogin, setHidelogin } = useContext(SharedStateContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    login(username, password).then(() => {
-      e.target.reset();
-      navigate("/");
-    });
+    login(username, password)
+      .then(() => {
+        e.target.reset();
+        setHidelogin(false);
+      })
+      .then(() => {
+        navigate("/");
+      });
   };
-
-  // const handleClickHome = () => {
-  //   navigate("/");
-  // };
 
   return (
     <div className="card text-bg-light mb-3">

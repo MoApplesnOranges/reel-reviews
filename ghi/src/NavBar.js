@@ -1,11 +1,13 @@
 import "./index.css";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Dropdown } from "react-bootstrap";
+import SharedStateContext from "./context";
 
 function Nav() {
-  const [Hidelogin, setHidelogin] = useState(false);
-  const [Data, setData] = useState("");
+  // const [Hidelogin, setHidelogin] = useState(false);
+  const { Hidelogin, setHidelogin } = useContext(SharedStateContext);
+  // const [Data, setData] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -13,13 +15,14 @@ function Nav() {
       const url = "http://localhost:8000/token";
       const fetchConfig = {
         method: "GET",
-        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
       };
       const response = await fetch(url, fetchConfig);
       const tokenData = await response.json();
+      console.log(tokenData);
       if (tokenData === null) {
         //  setData(tokenData);
         setHidelogin(true);
@@ -44,13 +47,13 @@ function Nav() {
     const response = await fetch(url, fetchConfig);
     if (response.ok) {
       console.log("successfully logged out");
+      setHidelogin(true);
     }
   };
 
   const handleClickHome = async () => {
     handleLogout().then(() => {
       navigate("/");
-      window.location.reload();
     });
   };
 
@@ -157,30 +160,6 @@ function Nav() {
                   <NavLink onClick={handleClickHome}>Logout</NavLink>
                 )}
               </li>
-              {/* <li className="navbar-item">
-                <Dropdown>
-                  <Dropdown.Toggle variant="success" id="dropdown-service">
-                    Service
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item as={Link} to="technicians">
-                      Technicians
-                    </Dropdown.Item>
-                    <Dropdown.Item as={Link} to="technicians/create">
-                      Add a Technician
-                    </Dropdown.Item>
-                    <Dropdown.Item as={Link} to="appointments">
-                      Service Appointments
-                    </Dropdown.Item>
-                    <Dropdown.Item as={Link} to="appointments/create">
-                      Create a Service Appointment
-                    </Dropdown.Item>
-                    <Dropdown.Item as={Link} to="appointments/history">
-                      Service History
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </li> */}
             </ul>
           </div>
         </div>
