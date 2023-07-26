@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./index.css";
+import ReviewForm from "./ReviewForm";
 
 const MovieDetails = () => {
   const [movieDetails, setMovieDetails] = useState({});
@@ -90,6 +91,9 @@ const MovieDetails = () => {
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
         ></iframe>
+      </div>
+      <div>
+        <ReviewForm movie_id={movie_id} />
       </div>
     </>
   );
