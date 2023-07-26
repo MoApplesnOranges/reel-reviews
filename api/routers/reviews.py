@@ -23,7 +23,7 @@ router = APIRouter()
 @router.post("/api/movie/{movie_id}/review", response_model=ReviewOut)
 async def create_review(
     info: ReviewIn,
-    movie_id: str,
+    movie_id: int,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: ReviewRepository = Depends(),
 ):
@@ -66,6 +66,13 @@ async def retrieve_all_reviews(
 ):
     if account_data:
         return repo.get_all_reviews()
+
+
+@router.get("/api/reviews/all/loggedout")
+async def retrieve_all_reviews(
+    repo: ReviewRepository = Depends(),
+):
+    return repo.get_all_reviews()
 
 
 @router.delete("/api/reviews/{review_id}", response_model=bool)

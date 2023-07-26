@@ -8,7 +8,7 @@ steps = [
             body TEXT NOT NULL,
             posted_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             rating BOOLEAN NOT NULL,
-            movie_id VARCHAR(20) NOT NULL,
+            movie_id INT NOT NULL,
             account_id INT NOT NULL REFERENCES accounts(id)
         );
         """,
