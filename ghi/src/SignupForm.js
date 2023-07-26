@@ -1,16 +1,16 @@
 import { useState, useContext } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import { useNavigate } from "react-router-dom";
-import SharedStateContext from "./context";
+import TokenContext from "./TokenContext";
 
 const SignupForm = () => {
+  const [Hidelogin, setHidelogin] = useContext(TokenContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [avatar, setAvatar] = useState("");
-  const { register } = useToken();
+  const { register, login } = useToken();
   const navigate = useNavigate();
-  const { Hidelogin, setHidelogin } = useContext(SharedStateContext);
 
   const handleRegistration = async (e) => {
     e.preventDefault();
@@ -22,11 +22,15 @@ const SignupForm = () => {
     };
     register(accountData, `${process.env.REACT_APP_API_HOST}/api/accounts`)
       .then(() => {
-        e.target.reset();
-        setHidelogin(false);
+        login(username, password).then(() => {
+          e.target.reset();
+          setHidelogin(false);
+          navigate("/");
+        });
+        // window.location.reload();
       })
-      .then(() => {
-        navigate("/");
+      .catch((error) => {
+        console.error("Login failed:", error);
       });
   };
 

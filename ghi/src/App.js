@@ -27,9 +27,10 @@ import War from "./genres/war";
 import Western from "./genres/western";
 import MovieDetails from "./MovieDetails";
 import Logout from "./Logout";
-import SharedStateContext from "./context";
+import TokenContext from "./TokenContext";
 
 function App(props) {
+  const [Hidelogin, setHidelogin] = useState(true);
   const baseURL = process.env.REACT_APP_API_HOST;
   const [Hidelogin, setHidelogin] = useState(false);
   // const SharedHideLoginContext = React.createContext();
@@ -63,14 +64,13 @@ function App(props) {
   ) {
     return null;
   }
+
   return (
     <BrowserRouter>
-      {/* <Nav /> */}
-      <SharedStateContext.Provider value={{ Hidelogin, setHidelogin }}>
+      <TokenContext.Provider value={[Hidelogin, setHidelogin]}>
         <Nav />
         <div className="container">
           <AuthProvider baseUrl={baseURL}>
-            {/* <LoginForm /> */}
             <Routes>
               <Route path="/" element={<MainPage />} />
               <Route path="/signup" element={<SignupForm />} />
@@ -155,7 +155,7 @@ function App(props) {
             </Routes>
           </AuthProvider>
         </div>
-      </SharedStateContext.Provider>
+      </TokenContext.Provider>
     </BrowserRouter>
   );
 }

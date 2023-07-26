@@ -1,9 +1,10 @@
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import SharedStateContext from "./context";
+import TokenContext from "./TokenContext";
 
 const LoginForm = () => {
+  const [Hidelogin, setHidelogin] = useContext(TokenContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useToken();
@@ -16,9 +17,10 @@ const LoginForm = () => {
       .then(() => {
         e.target.reset();
         setHidelogin(false);
-      })
-      .then(() => {
         navigate("/");
+      })
+      .catch((error) => {
+        console.error("Login failed:", error);
       });
   };
 
