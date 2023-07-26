@@ -1,18 +1,25 @@
 import useToken from "@galvanize-inc/jwtdown-for-react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import TokenContext from "./TokenContext";
 
 const LoginForm = () => {
+  const [Hidelogin, setHidelogin] = useContext(TokenContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useToken();
   const navigate = useNavigate();
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     login(username, password).then(() => {
       e.target.reset();
+      setHidelogin(false);
       navigate("/");
+    })
+    .catch((error) => {
+      console.error("Login failed:", error);
     });
   };
 

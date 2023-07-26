@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
@@ -27,8 +28,10 @@ import War from "./genres/war";
 import Western from "./genres/western";
 import MovieDetails from "./MovieDetails";
 import Logout from "./Logout";
+import TokenContext from "./TokenContext";
 
 function App(props) {
+  const [Hidelogin, setHidelogin] = useState(true);
   const baseURL = process.env.REACT_APP_API_HOST;
   if (
     props.action === undefined &&
@@ -53,8 +56,12 @@ function App(props) {
   ) {
     return null;
   }
+
+
+
   return (
     <BrowserRouter>
+      <TokenContext.Provider value={[Hidelogin, setHidelogin]}>
       <Nav />
       <div className="container">
         <AuthProvider baseUrl={baseURL}>
@@ -142,6 +149,7 @@ function App(props) {
           </Routes>
         </AuthProvider>
       </div>
+      </TokenContext.Provider>
     </BrowserRouter>
   );
 }

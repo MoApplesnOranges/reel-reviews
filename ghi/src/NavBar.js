@@ -1,10 +1,12 @@
 import "./index.css";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Dropdown } from "react-bootstrap";
+import TokenContext from "./TokenContext";
 
 function Nav() {
-  const [Hidelogin, setHidelogin] = useState(false);
+  // const [Hidelogin, setHidelogin] = useState(false);
+  const [Hidelogin, setHidelogin] = useContext(TokenContext);
   const [Data, setData] = useState("");
   const navigate = useNavigate();
 
@@ -30,29 +32,31 @@ function Nav() {
       }
     };
     fetchToken();
-  }, [Hidelogin]);
+  }, []);
+  // }, [Hidelogin]);
 
-  const handleLogout = async () => {
-    const url = "http://localhost:8000/token";
-    const fetchConfig = {
-      method: "DELETE",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    const response = await fetch(url, fetchConfig);
-    if (response.ok) {
-      console.log("successfully logged out");
-    }
-  };
+  // const handleLogout = async () => {
+  //   const url = "http://localhost:8000/token";
+  //   const fetchConfig = {
+  //     method: "DELETE",
+  //     credentials: "include",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   };
+  //   const response = await fetch(url, fetchConfig);
+  //   if (response.ok) {
+  //     console.log("successfully logged out");
+  //     setHidelogin(true);
+  //   }
+  // };
 
-  const handleClickHome = async () => {
-    handleLogout().then(() => {
-      navigate("/");
-      window.location.reload();
-    });
-  };
+  // const handleClickHome = async () => {
+  //   handleLogout().then(() => {
+  //     navigate("/");
+  //     // window.location.reload();
+  //   });
+  // };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-success ">
@@ -146,17 +150,29 @@ function Nav() {
                   </Dropdown.Menu>
                 </Dropdown>
               </li>
-              <li className="navbar-item" variant="success">
-                {Hidelogin === true && <NavLink to="/signup">Signup</NavLink>}
-              </li>
-              <li className="navbar-item" variant="success">
-                {Hidelogin === true && <NavLink to="/login">Login</NavLink>}
+              <li className="navbar-item">
+                {Hidelogin && <NavLink to="/signup">Signup</NavLink>}
               </li>
               <li className="navbar-item">
-                {Hidelogin === false && (
-                  <NavLink onClick={handleClickHome}>Logout</NavLink>
+                {Hidelogin && <NavLink to="/login">Login</NavLink>}
+              </li>
+              <li className="navbar-item">
+                {!Hidelogin && (
+                  <NavLink to="/logout">Logout</NavLink>
                 )}
               </li>
+              {/* <li className="navbar-item">
+                {Hidelogin && <NavLink to="/signup">Signup</NavLink>}
+              </li>
+              <li className="navbar-item">
+                {Hidelogin && <NavLink to="/login">Login</NavLink>}
+              </li>
+              :
+              <li className="navbar-item">
+                {!Hidelogin && (
+                  <NavLink to="/logout">Logout</NavLink>
+                )}
+              </li> */}
               {/* <li className="navbar-item">
                 <Dropdown>
                   <Dropdown.Toggle variant="success" id="dropdown-service">
