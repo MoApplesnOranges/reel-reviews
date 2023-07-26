@@ -32,13 +32,6 @@ import TokenContext from "./TokenContext";
 function App(props) {
   const [Hidelogin, setHidelogin] = useState(true);
   const baseURL = process.env.REACT_APP_API_HOST;
-  // const SharedHideLoginContext = React.createContext();
-  // return (
-  //   <SharedStateContext.Provider value={{ Hidelogin, setHidelogin }}>
-  //     <Nav />
-  //     <LoginForm />
-  //   </SharedStateContext.Provider>
-  // );
 
   if (
     props.action === undefined &&
