@@ -9,7 +9,6 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const { login } = useToken();
   const navigate = useNavigate();
-  const { Hidelogin, setHidelogin } = useContext(SharedStateContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
