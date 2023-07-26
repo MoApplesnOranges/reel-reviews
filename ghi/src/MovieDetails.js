@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import "./index.css";
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import './index.css';
+import ReviewForm from './ReviewForm';
 
 const MovieDetails = () => {
   const [movieDetails, setMovieDetails] = useState({});
@@ -30,18 +31,18 @@ const MovieDetails = () => {
   return (
     <>
       <div>
-        <h1 className="text-center text-light">{movieDetails.Title}</h1>
+        <h1 className='text-center text-light'>{movieDetails.Title}</h1>
       </div>
-      <div className="detail-container">
-        <div className="poster-left">
+      <div className='detail-container'>
+        <div className='poster-left'>
           <img
             src={movieDetails.Poster}
-            alt="poster"
-            className="card details"
+            alt='poster'
+            className='card details'
           />
         </div>
-        <div className="detail-right">
-          <p className="text-light">
+        <div className='detail-right'>
+          <p className='text-light'>
             Year: {movieDetails.Year}
             <br />
             Rated: {movieDetails.Rated}
@@ -69,6 +70,9 @@ const MovieDetails = () => {
             Metascore: {movieDetails.Metascore}
           </p>
         </div>
+      </div>
+      <div>
+        <ReviewForm movie_id={movie_id} />
       </div>
     </>
   );

@@ -11,39 +11,50 @@ class Error(BaseModel):
 class ReviewIn(BaseModel):
     title: str
     body: str
-    posted_time: datetime
     rating: bool
-    movie_id: str
+    movie_id: int
     account_id: int
 
 
 class ReviewOut(ReviewIn):
     id: int
+    posted_time: datetime
+
+
+class ReviewOutWithUser(BaseModel):
+    title: str
+    body: str
+    rating: bool
+    movie_id: int
+    username: str
+    id: int
+    posted_time: datetime
 
 
 class ReviewRepository:
-    def create(self, review: ReviewIn, movie_id: str) -> ReviewOut:
+    def create(self, review: ReviewIn, movie_id: int) -> ReviewOut:
         with pool.connection() as conn:
             with conn.cursor() as db:
                 result = db.execute(
                     """
                     INSERT INTO reviews
-                        (title, body, posted_time, rating, movie_id, account_id)
+                        (title, body, rating, movie_id, account_id)
                     VALUES
-                        (%s, %s, %s, %s, %s, %s)
-                    RETURNING id;
+                        (%s, %s, %s, %s, %s)
+                    RETURNING id, posted_time AS posted_time;
                     """,
                     [
                         review.title,
                         review.body,
-                        review.posted_time,
                         review.rating,
                         movie_id,
                         review.account_id,
                     ],
                 )
-                id = result.fetchone()[0]
-                return self.review_in_to_out(id, review)
+                row = result.fetchone()
+                id = row[0]
+                posted_time = row[1]
+                return self.review_in_to_out(id, review, posted_time)
 
     def update(self, review_id: int, review: ReviewIn) -> ReviewOut:
         with pool.connection() as conn:
@@ -53,7 +64,6 @@ class ReviewRepository:
                     UPDATE reviews
                     SET title = %s
                         , body = %s
-                        , posted_time = %s
                         , rating = %s
                         , movie_id = %s
                         , account_id = %s
@@ -62,7 +72,6 @@ class ReviewRepository:
                     [
                         review.title,
                         review.body,
-                        review.posted_time,
                         review.rating,
                         review.movie_id,
                         review.account_id,
@@ -71,20 +80,21 @@ class ReviewRepository:
                 )
                 return self.review_in_to_out(review_id, review)
 
-    def get_one_review(self, review_id: int) -> ReviewOut:
+    def get_one_review(self, review_id: int) -> ReviewOutWithUser:
         with pool.connection() as conn:
             with conn.cursor() as db:
                 result = db.execute(
                     """
-                    SELECT id
-                        , title
-                        , body
-                        , posted_time
-                        , rating
-                        , movie_id
-                        , account_id
+                    SELECT reviews.id
+                    , reviews.title
+                    , reviews.body
+                    , reviews.posted_time
+                    , reviews.rating
+                    , reviews.movie_id
+                    , accounts.username
                     FROM reviews
-                    WHERE id = %s
+                    JOIN accounts ON (accounts.id = reviews.account_id)
+                    WHERE reviews.id = %s
                     """,
                     [review_id],
                 )
@@ -94,14 +104,21 @@ class ReviewRepository:
                 else:
                     return self.record_to_review_out(record)
 
-    def get_all_reviews(self) -> List[ReviewOut]:
+    def get_all_reviews(self) -> List[ReviewOutWithUser]:
         with pool.connection() as conn:
             with conn.cursor() as db:
                 result = db.execute(
                     """
-                    SELECT id, title, body, posted_time, rating, movie_id, account_id
+                    SELECT reviews.id
+                    , reviews.title
+                    , reviews.body
+                    , reviews.posted_time
+                    , reviews.rating
+                    , reviews.movie_id
+                    , accounts.username
                     FROM reviews
-                    ORDER BY account_id;
+                    JOIN accounts ON (accounts.id = reviews.account_id)
+                    ORDER BY movie_id;
                     """
                 )
                 return [self.record_to_review_out(record) for record in result]
@@ -121,9 +138,11 @@ class ReviewRepository:
         except Exception:
             return False
 
-    def review_in_to_out(self, id: int, review: ReviewIn):
+    def review_in_to_out(
+        self, id: int, review: ReviewIn, posted_time: datetime
+    ):
         old_data = review.dict()
-        return ReviewOut(id=id, **old_data)
+        return ReviewOut(id=id, **old_data, posted_time=posted_time)
 
     def review_update_to_out(
         self, id: int, review_id: int, movie_id: int, review: ReviewIn
@@ -134,12 +153,12 @@ class ReviewRepository:
         )
 
     def record_to_review_out(self, record):
-        return ReviewOut(
+        return ReviewOutWithUser(
             id=record[0],
             title=record[1],
             body=record[2],
             posted_time=record[3],
             rating=record[4],
             movie_id=record[5],
-            account_id=record[6],
+            username=record[6],
         )
