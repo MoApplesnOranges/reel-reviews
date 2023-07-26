@@ -47,7 +47,8 @@ h1 {
   font-size: 18px;
 }
 
-.card.search-images {
+.card.search-images,
+.avatar {
   height: 302px;
   width: 202px;
 }
@@ -72,6 +73,11 @@ h1 {
 .header {
   margin-top: 20px;
   margin-bottom: 10px;
+}
+
+.hello {
+  padding-left: 0px;
+  padding-bottom: 30px;
 }
 
 .detail-container {
