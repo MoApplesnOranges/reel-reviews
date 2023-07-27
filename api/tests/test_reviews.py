@@ -4,6 +4,7 @@ from queries.reviews import ReviewRepository
 from jwtdownAPI.authenticator import authenticator
 from pydantic import BaseModel
 from typing import Optional
+from datetime import datetime
 
 client = TestClient(app)
 
@@ -27,27 +28,28 @@ class EmptyReviewRepository:
 
 
 class FetchQueries:
-    def fetch_one_review(self, movie_id, review_id):
+    def get_one_review(self, review_id):
         result = {
             "title": "review title v2",
             "body": "review body v2",
             "rating": True,
             "movie_id": 550,
             "username": "user1",
-            # "id": 1,
-            # "posted_time": "2023-07-24T22:15:17.622000",
+            "id": 1,
+            "posted_time": "2023-07-10T00:00:00",
         }
         return result
 
 
-def test_fetch_one_review():
+def test_get_one_review():
     # Arrange
     app.dependency_overrides[
         authenticator.get_current_account_data
     ] = fake_get_current_account_data
     app.dependency_overrides[ReviewRepository] = FetchQueries
     # Act
-    response = client.get("/api/movie/{movie_id}/review/{review_id}")
+    response = client.get("/api/movie/550/review/1")
+    print(response.json())
     # Cleanup
     app.dependency_overrides = {}
     # Assert
@@ -59,6 +61,7 @@ def test_fetch_one_review():
         "movie_id": 550,
         "username": "user1",
         "id": 1,
+        "posted_time": "2023-07-10T00:00:00",
     }
 
 
@@ -83,10 +86,10 @@ class CreateQueries:
             "title": "Great movie",
             "body": "lots of fun",
             "rating": True,
-            "movie_id": 550,
+            "movie_id": 1,
             "account_id": 1,
             "id": 1,
-            "posted_time": "2023-07-24T21:39:41.618000",
+            "posted_time": datetime(year=2023, month=7, day=10),
         }
         result.update(json)
         return result
@@ -102,20 +105,21 @@ def test_create_review():
         "title": "Great movie",
         "body": "lots of fun",
         "rating": True,
-        "movie_id": 550,
+        "movie_id": 1,
         "account_id": 1,
     }
     expected = {
         "title": "Great movie",
         "body": "lots of fun",
         "rating": True,
-        "movie_id": 550,
+        "movie_id": 1,
         "account_id": 1,
         "id": 1,
-        "posted_time": "2023-07-24T21:39:41.618000",
+        "posted_time": "2023-07-10T00:00:00",
     }
     # act
-    response = client.post("/api/movie/{movie_id}/review", json=json)
+    response = client.post("/api/movie/1/review", json=json)
+    print(response.json())
     # cleanup
     app.dependency_overrides = {}
     # assert
