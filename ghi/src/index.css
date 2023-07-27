@@ -44,6 +44,19 @@ h1 {
   width: 30%;
 }
 
+.review-poster-container {
+  flex: 0 0 auto;
+  margin-right: 20px;
+}
+
+.review-text-container {
+  flex: 1 1 auto;
+}
+
+.review-poster {
+  height: 200px;
+}
+
 .search input {
   width: 100%;
   padding: 15px 25px;
@@ -86,23 +99,43 @@ h1 {
 }
 
 .reviews-heading-bg {
-  background: rgba(0, 0, 0, 0.65);
+  background: rgb(0, 0, 0);
   padding-bottom: 1px;
   margin-top: 40px;
   border-top: 0px;
+  display: flex;
+  justify-content: center;
 }
 
 .reviews-container {
   display: flex;
 }
 
+.review-date {
+  padding-top: 65px;
+  padding-bottom: 0px;
+}
 .scroll {
   overflow-y: auto;
-  height: 300px;
+  height: 600px;
 }
 
+.thumbs-up,
+.thumbs-down {
+  position: relative;
+  top: 30px;
+}
 .detail-container {
   display: flex;
+}
+
+.left-container {
+  display: flex;
+  border: solid blue;
+}
+.right-container {
+  display: flex;
+  border: solid red;
 }
 
 .poster-left,
