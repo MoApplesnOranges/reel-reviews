@@ -14,6 +14,7 @@ from queries.reviews import (
     ReviewIn,
     ReviewOut,
     ReviewRepository,
+    ReviewOutWithUser,
     Error,
 )
 
@@ -44,14 +45,14 @@ async def update_review(
 
 @router.get(
     "/api/movie/{movie_id}/review/{review_id}",
-    response_model=Optional[ReviewOut],
+    response_model=Optional[ReviewOutWithUser],
 )
 async def get_one_review(
     review_id: int,
     response: Response,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: ReviewRepository = Depends(),
-) -> ReviewOut:
+) -> ReviewOutWithUser:
     review = repo.get_one_review(review_id)
     if review is None:
         response.status_code = 404

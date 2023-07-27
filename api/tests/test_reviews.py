@@ -26,19 +26,40 @@ class EmptyReviewRepository:
         return {"reviews": []}
 
 
-class CreateQueries:
-    def create(self, json, movie_id):
+class FetchQueries:
+    def fetch_one_review(self, movie_id, review_id):
         result = {
-            "title": "Great movie",
-            "body": "lots of fun",
-            "posted_time": "2023-07-24T21:39:41.618000+00:00",
+            "title": "review title v2",
+            "body": "review body v2",
             "rating": True,
-            "movie_id": "0137523",
-            "account_id": 1,
-            "id": 1,
+            "movie_id": 550,
+            "username": "user1",
+            # "id": 1,
+            # "posted_time": "2023-07-24T22:15:17.622000",
         }
-        result.update(json)
         return result
+
+
+def test_fetch_one_review():
+    # Arrange
+    app.dependency_overrides[
+        authenticator.get_current_account_data
+    ] = fake_get_current_account_data
+    app.dependency_overrides[ReviewRepository] = FetchQueries
+    # Act
+    response = client.get("/api/movie/{movie_id}/review/{review_id}")
+    # Cleanup
+    app.dependency_overrides = {}
+    # Assert
+    assert response.status_code == 200
+    assert response.json() == {
+        "title": "review title v2",
+        "body": "review body v2",
+        "rating": True,
+        "movie_id": 550,
+        "username": "user1",
+        "id": 1,
+    }
 
 
 def test_retrieve_all_reviews():
@@ -56,6 +77,21 @@ def test_retrieve_all_reviews():
     assert response.json() == {"reviews": []}
 
 
+class CreateQueries:
+    def create(self, json, movie_id):
+        result = {
+            "title": "Great movie",
+            "body": "lots of fun",
+            "rating": True,
+            "movie_id": 550,
+            "account_id": 1,
+            "id": 1,
+            "posted_time": "2023-07-24T21:39:41.618000",
+        }
+        result.update(json)
+        return result
+
+
 def test_create_review():
     # arrange
     app.dependency_overrides[
@@ -65,19 +101,18 @@ def test_create_review():
     json = {
         "title": "Great movie",
         "body": "lots of fun",
-        "posted_time": "2023-07-24T21:39:41.618000+00:00",
         "rating": True,
-        "movie_id": "0137523",
+        "movie_id": 550,
         "account_id": 1,
     }
     expected = {
         "title": "Great movie",
         "body": "lots of fun",
-        "posted_time": "2023-07-24T21:39:41.618000+00:00",
         "rating": True,
-        "movie_id": "0137523",
+        "movie_id": 550,
         "account_id": 1,
         "id": 1,
+        "posted_time": "2023-07-24T21:39:41.618000",
     }
     # act
     response = client.post("/api/movie/{movie_id}/review", json=json)
