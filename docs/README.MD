@@ -29,9 +29,24 @@ of our evergrowing community.
 - Logged in users can navigate to their profile page via a link in the navbar.
   - On a user's profile page, they can see their username, avatar, and a list of their positively and negatively reviewed movies.
 
-## Stretch Goals
+### Stretch Goals
 
-- Stretch Goal 1
+- Add about me section to profile page
+  - Ability to update profile information
+- Add searchbar functionality to navbar
+- Ability to create personal movie lists (watch later, etc...)
+- Ability to search for users / follow users
+  - Activity feed to track reviews left by followed users
+- Create modals for review form / update review form
+- CSS
+- CI/CD
+- Display movie related news by fetching from third party API
+- About Us page
+- Display ratings and/or title information when hovering over movie poster
+- Error messages
+- Add a count of all Like / Dislike ratings to movie details page
+- List recently reviewed movies on home page
+- Add ability to comment on a review OR leave upvote / downvote rating for a review
 
 # Project Initialization
 
