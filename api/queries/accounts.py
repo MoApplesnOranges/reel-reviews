@@ -3,8 +3,8 @@ from typing import List, Optional, Union
 from queries.pool import pool
 
 
-class DuplicateAccountError(ValueError):
-    pass
+class DuplicateAccountError(BaseModel):
+    message: str
 
 
 class Error(BaseModel):
@@ -40,55 +40,55 @@ class AccountRepository:
     def create(
         self, account: AccountIn, hashed_password: str
     ) -> Union[AccountOutWithPassword, Error]:
-        # try:
-        with pool.connection() as conn:
-            with conn.cursor() as db:
-                result = db.execute(
-                    """
-                        INSERT INTO accounts
-                            (username, email, avatar, hashed_password)
-                        VALUES
-                            (%s, %s, %s, %s)
-                        RETURNING id;
-                        """,
-                    [
-                        account.username,
-                        account.email,
-                        account.avatar,
-                        hashed_password,
-                    ],
-                )
-                id = result.fetchone()[0]
-                return self.account_in_to_out(id, account)
-        # except Exception:
-        # return {"message": "Create did not work"}
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                            INSERT INTO accounts
+                                (username, email, avatar, hashed_password)
+                            VALUES
+                                (%s, %s, %s, %s)
+                            RETURNING id;
+                            """,
+                        [
+                            account.username,
+                            account.email,
+                            account.avatar,
+                            hashed_password,
+                        ],
+                    )
+                    id = result.fetchone()[0]
+                    return self.account_in_to_out(id, account)
+        except Exception:
+            return {"message": "Create did not work"}
 
     def update(
         self, account_id: int, account: AccountUpdate, hashed_password: str
     ) -> Union[AccountOutWithPassword, Error]:
-        # try:
-        with pool.connection() as conn:
-            with conn.cursor() as db:
-                db.execute(
-                    """
-                    UPDATE accounts
-                    SET username = %s
-                        , email = %s
-                        , hashed_password = %s
-                        , avatar = %s
-                    WHERE id = %s
-                    """,
-                    [
-                        account.username,
-                        account.email,
-                        hashed_password,
-                        account.avatar,
-                        account_id,
-                    ],
-                )
-                return self.updated_account_in_to_out(account_id, account)
-        # except Exception:
-        #     return {"message": "Could not update that account"}
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        UPDATE accounts
+                        SET username = %s
+                            , email = %s
+                            , hashed_password = %s
+                            , avatar = %s
+                        WHERE id = %s
+                        """,
+                        [
+                            account.username,
+                            account.email,
+                            hashed_password,
+                            account.avatar,
+                            account_id,
+                        ],
+                    )
+                    return self.updated_account_in_to_out(account_id, account)
+        except Exception:
+            return {"message": "Could not update that account"}
 
     def get_one_account(
         self, username: str

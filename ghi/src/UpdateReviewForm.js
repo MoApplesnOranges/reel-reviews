@@ -4,7 +4,7 @@ import useToken from '@galvanize-inc/jwtdown-for-react';
 
 function UpdateReviewForm(props) {
   const movie_id = parseInt(props.movie_id);
-  const { token, register, login } = useToken();
+  const { token } = useToken();
   const [formData, setFormData] = useState({});
 
   useEffect(() => {
@@ -54,7 +54,6 @@ function UpdateReviewForm(props) {
       ...formData,
       [inputName]: value,
     });
-    console.log(formData);
   };
 
   const handleRating = (e) => {
@@ -95,7 +94,6 @@ function UpdateReviewForm(props) {
 
   return (
     <div>
-      {/* <div className='row'> */}
       <div className='offset-3 col-6'>
         <div className='shadow p-4 mt-4'>
           <h1 style={{ color: 'white' }}>Update Review</h1>
@@ -127,7 +125,7 @@ function UpdateReviewForm(props) {
               <label htmlFor='body'>Body</label>
             </div>
             <div className='mb-3' style={{ color: 'white' }}>
-              <Form.Check // prettier-ignore
+              <Form.Check
                 type='radio'
                 name='rating'
                 required

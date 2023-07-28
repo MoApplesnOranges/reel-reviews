@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './index.css';
 import ReviewForm from './ReviewForm';
@@ -30,9 +30,6 @@ const MovieDetails = () => {
         const responseReviewsAll = await fetch(urlReviewsAll, fetchConfig);
         const reviewsAllData = await responseReviewsAll.json();
 
-        console.log(tokenData);
-        console.log(reviewsAllData);
-
         let reviewsArray = [];
         for (let reviews in reviewsAllData) {
           if (reviewsAllData[reviews].movie_id == movie_id) {
@@ -47,20 +44,17 @@ const MovieDetails = () => {
             reviewsAllData[review].username === tokenData.account.username
           ) {
             setReviewConfirmation(true);
-            console.log('returned');
+
             break;
           } else {
             setReviewConfirmation(false);
-            console.log('no matching movie review for user');
           }
         }
 
         if (tokenData === null) {
           setHideReview(false);
-          console.log('logged out');
         } else {
           setHideReview(true);
-          console.log('logged in');
         }
       } catch (error) {
         console.error('This is expected if logged out:', error);
@@ -99,8 +93,6 @@ const MovieDetails = () => {
   if (!movieDetails) {
     return <div>Fetching data</div>;
   }
-  console.log(HideReview);
-  console.log(reviewConfirmation);
 
   return (
     <>

@@ -1,10 +1,5 @@
 from fastapi import (
     APIRouter,
-    Depends,
-    Response,
-    HTTPException,
-    status,
-    Request,
 )
 from Movie_Api.omdb import (
     get_new_releases,
@@ -12,7 +7,7 @@ from Movie_Api.omdb import (
     get_title,
     get_movies_by_genre,
 )
-from queries.movies import MovieIn
+
 
 router = APIRouter()
 

@@ -1,14 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
-import TokenContext from './TokenContext';
+import React, { useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import useToken from '@galvanize-inc/jwtdown-for-react';
-import { useNavigate } from 'react-router-dom';
 import './index.css';
 
 function ReviewForm(props) {
   const movie_id = parseInt(props.movie_id);
-  const { token, register, login } = useToken();
-  const [HideReview, setHideReview] = useContext(TokenContext);
+  const { token } = useToken();
   const [formData, setFormData] = useState({
     title: '',
     body: '',
@@ -16,7 +13,6 @@ function ReviewForm(props) {
     movie_id: movie_id,
     account_id: 0,
   });
-  const navigate = useNavigate();
 
   const handleFormChange = (e) => {
     const value = e.target.value;
@@ -25,7 +21,6 @@ function ReviewForm(props) {
       ...formData,
       [inputName]: value,
     });
-    console.log(formData);
   };
 
   const fetchAccountID = async () => {
@@ -39,7 +34,7 @@ function ReviewForm(props) {
     };
     const response = await fetch(url, fetchConfig);
     const data = await response.json();
-    console.log(data);
+
     const accountID = data.account.id;
     setFormData({
       ...formData,
@@ -53,7 +48,6 @@ function ReviewForm(props) {
       ...formData,
       rating: parsedRating,
     });
-    console.log(formData);
   };
 
   const handleSubmit = async (event) => {

@@ -34,7 +34,7 @@ class FetchQueries:
             "body": "review body v2",
             "rating": True,
             "movie_id": 550,
-            "username": "user1",
+            "account_id": 1,
             "id": 1,
             "posted_time": "2023-07-10T00:00:00",
         }
@@ -59,7 +59,7 @@ def test_get_one_review():
         "body": "review body v2",
         "rating": True,
         "movie_id": 550,
-        "username": "user1",
+        "account_id": 1,
         "id": 1,
         "posted_time": "2023-07-10T00:00:00",
     }

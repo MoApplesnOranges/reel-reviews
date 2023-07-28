@@ -6,7 +6,7 @@ from fastapi import (
     status,
     Request,
 )
-from typing import List, Optional, Union
+from typing import Optional, Union
 from jwtdown_fastapi.authentication import Token
 from jwtdownAPI.authenticator import authenticator
 from pydantic import BaseModel
@@ -14,7 +14,6 @@ from queries.accounts import (
     DuplicateAccountError,
     AccountIn,
     AccountOut,
-    AccountOutWithPassword,
     AccountRepository,
     Error,
 )

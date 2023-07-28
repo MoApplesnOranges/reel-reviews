@@ -1,11 +1,7 @@
 from pydantic import BaseModel
-from typing import List, Optional, Union
+from typing import List
 from queries.pool import pool
 from datetime import datetime
-
-
-class Error(BaseModel):
-    message: str
 
 
 class ReviewIn(BaseModel):
@@ -14,10 +10,6 @@ class ReviewIn(BaseModel):
     rating: bool
     movie_id: int
     account_id: int
-
-
-class ReviewInWithTime(ReviewIn):
-    posted_time: datetime
 
 
 class ReviewOut(ReviewIn):

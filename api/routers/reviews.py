@@ -3,20 +3,13 @@ from fastapi import (
     APIRouter,
     Depends,
     Response,
-    HTTPException,
-    status,
-    Request,
 )
-from typing import List, Optional, Union
-from jwtdown_fastapi.authentication import Token
+from typing import Optional
 from jwtdownAPI.authenticator import authenticator
-from pydantic import BaseModel
 from queries.reviews import (
     ReviewIn,
     ReviewOut,
     ReviewRepository,
-    ReviewOutWithUser,
-    Error,
 )
 
 router = APIRouter()
