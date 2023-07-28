@@ -7,6 +7,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.avatar-and-username {
+  background: rgba(0, 0, 0, 0.65);
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
@@ -40,6 +44,19 @@ h1 {
   width: 30%;
 }
 
+.review-poster-container {
+  flex: 0 0 auto;
+  margin-right: 20px;
+}
+
+.review-text-container {
+  flex: 1 1 auto;
+}
+
+.review-poster {
+  height: 200px;
+}
+
 .search input {
   width: 100%;
   padding: 15px 25px;
@@ -47,7 +64,8 @@ h1 {
   font-size: 18px;
 }
 
-.card.search-images {
+.card.search-images,
+.avatar {
   height: 302px;
   width: 202px;
 }
@@ -74,16 +92,113 @@ h1 {
   margin-bottom: 10px;
 }
 
+.hello,
+.reviews-heading {
+  padding-bottom: 30px;
+  padding-top: 50px;
+}
+
+.reviews-heading-bg {
+  background: rgb(0, 0, 0);
+  padding-bottom: 1px;
+  margin-top: 40px;
+  border-top: 0px;
+  display: flex;
+  justify-content: center;
+}
+
+.reviews-container {
+  display: flex;
+}
+
+.review-date {
+  padding-top: 65px;
+  padding-bottom: 0px;
+}
+.scroll {
+  overflow-y: auto;
+  height: 600px;
+}
+
+.thumbs-up,
+.thumbs-down {
+  position: relative;
+  top: 30px;
+}
 .detail-container {
   display: flex;
 }
 
+.left-container {
+  display: flex;
+  border: solid blue;
+}
+.right-container {
+  display: flex;
+  border: solid red;
+}
+
 .poster-left,
-.detail-right {
+.detail-right,
+.liked-left,
+.disliked-right {
   flex: 1;
   background: rgba(0, 0, 0);
 }
 
 .card.details {
   width: 400px;
+}
+
+table {
+  margin: auto;
+  border-collapse: collapse;
+}
+
+table,
+th,
+td {
+  border: 1px solid white;
+}
+
+th,
+td {
+  padding: 15px;
+  text-align: center;
+}
+
+tbody tr:nth-child(odd) {
+  color: rgb(207, 21, 4);
+  font-weight: bold;
+}
+
+tbody tr:nth-child(even) {
+  color: rgb(12, 128, 6);
+  font-weight: bold;
+}
+
+th {
+  color: azure;
+}
+
+.review-header {
+  text-align: center;
+  color: blue;
+}
+
+.like-button {
+  color: forestgreen;
+}
+
+.dislike-button {
+  color: darkred;
+}
+
+.videoPlayer {
+  display: flex;
+  justify-content: center;
+}
+
+#dropdown-genres {
+  margin-top: 30px;
 }
