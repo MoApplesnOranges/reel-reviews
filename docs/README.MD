@@ -29,6 +29,10 @@ of our evergrowing community.
 - Logged in users can navigate to their profile page via a link in the navbar.
   - On a user's profile page, they can see their username, avatar, and a list of their positively and negatively reviewed movies.
 
+## Stretch Goals
+
+- Stretch Goal 1
+
 # Project Initialization
 
 To start leaving your hot takes on Reel Reviews, follow these steps:
