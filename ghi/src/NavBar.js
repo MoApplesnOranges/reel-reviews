@@ -1,11 +1,12 @@
 import './index.css';
 import { Link, NavLink } from 'react-router-dom';
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Dropdown, Navbar } from 'react-bootstrap';
 import TokenContext from './TokenContext';
 
 function Nav() {
   const [Hidelogin, setHidelogin] = useContext(TokenContext);
+  const [user, setUser] = useState("")
 
   useEffect(() => {
     const fetchToken = async () => {
@@ -19,6 +20,7 @@ function Nav() {
       };
       const response = await fetch(url, fetchConfig);
       const tokenData = await response.json();
+      setUser(tokenData.account)
 
       if (tokenData === null) {
         setHidelogin(true);
@@ -153,7 +155,7 @@ function Nav() {
             </li>
             <li className='navbar-item'>
               {!Hidelogin && (
-                <NavLink to='/user' className='btn btn-warning mx-1'>
+                <NavLink to={`/${user.username}`} className='btn btn-warning mx-1'>
                   Profile
                 </NavLink>
               )}

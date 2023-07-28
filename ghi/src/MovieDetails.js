@@ -150,7 +150,7 @@ const MovieDetails = () => {
         </div>
       </div>
       <div>
-        <div>
+        <div className="reviews-background">
           <h2 className="review-header">Reviews</h2>
           <table>
             <thead>
