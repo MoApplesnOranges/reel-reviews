@@ -7,7 +7,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.avatar-and-username {
+.avatar-and-username, .reviews-background {
   background: rgba(0, 0, 0, 0.65);
 }
 

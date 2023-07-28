@@ -74,7 +74,7 @@ function App(props) {
               <Route path='/login' element={<LoginForm />} />
               <Route path='/logout' element={<Logout />} />
               <Route path='/movie/:movie_id' element={<MovieDetails />} />
-              <Route path='/user' element={<ProfilePage />} />
+              <Route path='/:username' element={<ProfilePage />} />
               <Route path='/reviews' element={<ReviewForm />} />
               <Route
                 path='/genres/action'

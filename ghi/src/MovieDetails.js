@@ -150,7 +150,7 @@ const MovieDetails = () => {
         </div>
       </div>
       <div>
-        <div>
+        <div className="reviews-background">
           <h2 className='review-header'>Reviews</h2>
           <table>
             <thead>
@@ -164,10 +164,15 @@ const MovieDetails = () => {
             </thead>
             <tbody>
               {review.map((reviews, index) => (
-                <tr key={index}>
+                <tr
+                  key={index}
+                  style={{
+                    color: reviews.rating === true ? "green" : "red",
+                  }}
+                >
                   <td>{reviews.title}</td>
                   <td>{reviews.body}</td>
-                  <td>{reviews.rating ? 'Positive' : 'Negative'}</td>
+                  <td>{reviews.rating ? "Positive" : "Negative"}</td>
                   <td>{reviews.username}</td>
                   <td>{new Date(reviews.posted_time).toLocaleString()}</td>
                 </tr>
