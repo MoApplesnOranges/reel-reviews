@@ -1,3 +1,4 @@
+from datetime import datetime
 from fastapi import (
     APIRouter,
     Depends,
@@ -34,30 +35,39 @@ async def create_review(
 
 @router.put("/api/movie/{movie_id}/review", response_model=ReviewOut)
 async def update_review(
-    review_id: int,
     info: ReviewIn,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: ReviewRepository = Depends(),
 ):
     if account_data:
-        return repo.update(review_id, info)
+        return repo.update(info)
 
 
 @router.get(
     "/api/movie/{movie_id}/review/{review_id}",
-    response_model=Optional[ReviewOutWithUser],
+    response_model=Optional[ReviewOut],
 )
 async def get_one_review(
     review_id: int,
     response: Response,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: ReviewRepository = Depends(),
-) -> ReviewOutWithUser:
+) -> ReviewOut:
     review = repo.get_one_review(review_id)
     if review is None:
         response.status_code = 404
     elif account_data:
         return review
+
+
+@router.get("/api/movie/{movie_id}/reviews/all")
+async def get_all_movie_reviews(
+    movie_id: int,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+    repo: ReviewRepository = Depends(),
+):
+    if account_data:
+        return repo.get_reviews_by_movie_id(movie_id)
 
 
 @router.get("/api/reviews/all")
@@ -70,7 +80,7 @@ async def retrieve_all_reviews(
 
 
 @router.get("/api/reviews/all/loggedout")
-async def retrieve_all_reviews(
+async def no_token_retrieve_all_reviews(
     repo: ReviewRepository = Depends(),
 ):
     return repo.get_all_reviews()
