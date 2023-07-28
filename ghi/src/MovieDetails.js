@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import './index.css';
-import ReviewForm from './ReviewForm';
-import UpdateReviewForm from './UpdateReviewForm';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import "./index.css";
+import ReviewForm from "./ReviewForm";
+import UpdateReviewForm from "./UpdateReviewForm";
 
 const MovieDetails = () => {
   const [movieDetails, setMovieDetails] = useState({});
@@ -10,19 +10,19 @@ const MovieDetails = () => {
   const [reviewConfirmation, setReviewConfirmation] = useState(false);
   const [review, setReviewData] = useState([]);
 
-  const [trailer, setTrailer] = useState('');
+  const [trailer, setTrailer] = useState("");
   const { movie_id } = useParams();
 
   useEffect(() => {
     const fetchReviews = async () => {
-      const url = 'http://localhost:8000/token';
-      const urlReviewsAll = 'http://localhost:8000/api/reviews/all/loggedout';
+      const url = "http://localhost:8000/token";
+      const urlReviewsAll = "http://localhost:8000/api/reviews/all/loggedout";
       const fetchConfig = {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        credentials: 'include',
+        credentials: "include",
       };
       try {
         const responseToken = await fetch(url, fetchConfig);
@@ -57,7 +57,7 @@ const MovieDetails = () => {
           setHideReview(true);
         }
       } catch (error) {
-        console.error('This is expected if logged out:', error);
+        console.error("This is expected if logged out:", error);
       }
     };
     fetchReviews();
@@ -72,7 +72,7 @@ const MovieDetails = () => {
     let video = null;
     if (tmdbData.videos && tmdbData.videos.results) {
       for (const result of tmdbData.videos.results) {
-        if (result.type === 'Trailer') {
+        if (result.type === "Trailer") {
           video = result.key;
           break;
         }
@@ -97,18 +97,18 @@ const MovieDetails = () => {
   return (
     <>
       <div>
-        <h1 className='text-center text-light'>{movieDetails.Title}</h1>
+        <h1 className="text-center text-light">{movieDetails.Title}</h1>
       </div>
-      <div className='detail-container'>
-        <div className='poster-left'>
+      <div className="detail-container">
+        <div className="poster-left">
           <img
             src={movieDetails.Poster}
-            alt='poster'
-            className='card details'
+            alt="poster"
+            className="card details"
           />
         </div>
-        <div className='detail-right'>
-          <p className='text-light'>
+        <div className="detail-right">
+          <p className="text-light">
             Year: {movieDetails.Year}
             <br />
             Rated: {movieDetails.Rated}
@@ -137,21 +137,21 @@ const MovieDetails = () => {
           </p>
         </div>
       </div>
-      <div className='videoPlayer'>
-        <div className='embed-responsive embed-responsive-16by9'>
+      <div className="videoPlayer">
+        <div className="embed-responsive embed-responsive-16by9">
           <iframe
-            width='560'
-            height='315'
+            width="560"
+            height="315"
             src={`https://www.youtube.com/embed/${trailer}`}
-            title='YouTube video player'
-            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
           ></iframe>
         </div>
       </div>
       <div>
         <div>
-          <h2 className='review-header'>Reviews</h2>
+          <h2 className="review-header">Reviews</h2>
           <table>
             <thead>
               <tr>
@@ -164,12 +164,21 @@ const MovieDetails = () => {
             </thead>
             <tbody>
               {review.map((reviews, index) => (
-                <tr key={index}>
+                <tr
+                  key={index}
+                  style={{
+                    color: reviews.rating === true ? "green" : "red",
+                  }}
+                >
                   <td>{reviews.title}</td>
                   <td>{reviews.body}</td>
-                  <td>{reviews.rating ? 'Positive' : 'Negative'}</td>
+                  <td>{reviews.rating ? "Positive" : "Negative"}</td>
                   <td>{reviews.username}</td>
-                  <td>{new Date(reviews.posted_time).toLocaleString()}</td>
+                  <td>
+                    {new Date(reviews.posted_time).toLocaleString("en-US", {
+                      timeZone: "America/New_York",
+                    })}
+                  </td>
                 </tr>
               ))}
             </tbody>

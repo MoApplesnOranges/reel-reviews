@@ -167,13 +167,7 @@ td {
   text-align: center;
 }
 
-tbody tr:nth-child(odd) {
-  color: rgb(207, 21, 4);
-  font-weight: bold;
-}
-
-tbody tr:nth-child(even) {
-  color: rgb(12, 128, 6);
+tbody {
   font-weight: bold;
 }
 
