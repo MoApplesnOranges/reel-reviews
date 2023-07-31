@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./index.css";
 
 function TopRatedList() {
   const [topRatedMovies, setTopRatedMovies] = useState([]);
+
 
   const fetchTopRatedData = async () => {
     const url =
@@ -31,6 +33,15 @@ function TopRatedList() {
               key={movie.id}
               className="col d-flex justify-content-start m-1"
             >
+              <OverlayTrigger
+              key={movie.id}
+              placement="top"
+              overlay={
+                <Tooltip id={`tooltip-${movie.id}`}>
+                  {movie.title}
+                </Tooltip>
+              }
+              >
               <Link to={`/movie/${movie.id}`}>
                 <img
                   key={movie.id}
@@ -39,6 +50,7 @@ function TopRatedList() {
                   className="card"
                 />
               </Link>
+            </OverlayTrigger>
             </div>
           ))}
         </div>

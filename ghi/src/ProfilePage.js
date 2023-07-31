@@ -1,24 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import './index.css';
 import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import EditProfileForm from './EditProfileForm';
+import useToken from "@galvanize-inc/jwtdown-for-react"
 
 const ProfilePage = () => {
+  const [profileEdit, setProfileEdit] = useState(false)
   const [profile, setProfile] = useState({});
   const [reviews, setReviews] = useState([]);
   const [movie, setMovie] = useState([]);
+  const {username} = useParams()
+  const {token} = useToken()
+
+  const handleProfileEdit = () => {
+    setProfileEdit(!profileEdit)
+  }
 
   const fetchProfileData = async () => {
-    const tokenUrl = 'http://localhost:8000/token';
+    const profileUrl = `http://localhost:8000/api/accounts/${username}`
     const fetchConfig = {
       method: 'GET',
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
+      Authorization: `Bearer ${token}`
     };
-    const response = await fetch(tokenUrl, fetchConfig);
+    const response = await fetch(profileUrl, fetchConfig);
     const data = await response.json();
-    setProfile(data.account);
+    setProfile(data);
   };
 
   const fetchReviewData = async () => {
@@ -70,7 +81,9 @@ const ProfilePage = () => {
 
   return (
     <div>
-      {profile ? (
+      {profileEdit ? (
+        <EditProfileForm profile={profile} setProfile={setProfile}/>
+      ):profile ? (
         <React.Fragment>
           <div className='avatar-and-username'>
             <h1 className='text-light text-center hello'>
@@ -82,6 +95,7 @@ const ProfilePage = () => {
                 src={profile.avatar}
                 alt='avatar'
               />
+              <button onClick={handleProfileEdit}>Edit Profile</button>
             </div>
           </div>
           <div className='reviews-heading-bg'>

@@ -3,10 +3,12 @@ import { Link, NavLink } from 'react-router-dom';
 import React, { useEffect, useState, useContext } from 'react';
 import { Dropdown, Navbar } from 'react-bootstrap';
 import TokenContext from './TokenContext';
+import useToken from "@galvanize-inc/jwtdown-for-react"
 
 function Nav() {
   const [Hidelogin, setHidelogin] = useContext(TokenContext);
   const [user, setUser] = useState("")
+  const {token} = useToken()
 
   useEffect(() => {
     const fetchToken = async () => {
