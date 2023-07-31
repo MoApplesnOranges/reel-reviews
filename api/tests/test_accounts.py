@@ -17,11 +17,8 @@ class AccountOut(BaseModel):
 
 def fake_get_current_account_data():
     return AccountOut(
-                        id=1,
-                        username="user1",
-                        email="user1@gmail.com",
-                        avatar="avatar"
-                    )
+        id=1, username="user1", email="user1@gmail.com", avatar="avatar"
+    )
 
 
 class EmptyAccountRepository:
@@ -31,7 +28,9 @@ class EmptyAccountRepository:
 
 def test_retrieve_all_accounts():
     # Arrange
-    app.dependency_overrides[authenticator.get_current_account_data] = fake_get_current_account_data
+    app.dependency_overrides[
+        authenticator.get_current_account_data
+    ] = fake_get_current_account_data
     app.dependency_overrides[AccountRepository] = EmptyAccountRepository
     # Act
     response = client.get("/api/accounts/all")

@@ -4,3 +4,5 @@ psycopg[binary,pool]==3.1.2
 pytest
 jwtdown-fastapi>=0.2.0
 requests
+black
+flake8
