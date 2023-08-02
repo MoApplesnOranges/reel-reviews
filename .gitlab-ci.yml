@@ -22,6 +22,7 @@ api-unit-tests-job:
     - lint-test-job
   script:
     - cd api
+    - pip install --upgrade pip
     - pip install -r requirements.txt
     - python -m pytest
 # # Build API Image:
