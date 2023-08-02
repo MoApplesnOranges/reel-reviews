@@ -35,6 +35,8 @@ function App(props) {
   const [Hidelogin, setHidelogin] = useState(true);
   const [HideReview, setHideReview] = useState(true);
   const baseURL = process.env.REACT_APP_API_HOST;
+  const domain = /https:\/\/[^/]+/;
+  const basename = process.env.PUBLIC_URL.replace(domain, '');
 
   if (
     props.action === undefined &&
@@ -61,7 +63,7 @@ function App(props) {
   }
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <TokenContext.Provider
         value={[Hidelogin, setHidelogin, HideReview, setHideReview]}
       >
