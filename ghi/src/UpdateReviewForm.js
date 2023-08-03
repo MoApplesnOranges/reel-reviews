@@ -45,7 +45,7 @@ function UpdateReviewForm(props) {
       }
     };
     fetchMeEverything();
-  }, []);
+  }, [movie_id]);
 
   const handleFormChange = (e) => {
     const value = e.target.value;
