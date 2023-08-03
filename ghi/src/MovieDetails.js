@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import './index.css';
 import ReviewForm from './ReviewForm';
 import UpdateReviewForm from './UpdateReviewForm';
+import RecommendedList from './Recommendations';
 
 const MovieDetails = () => {
   const [movieDetails, setMovieDetails] = useState({});
@@ -61,7 +62,8 @@ const MovieDetails = () => {
       }
     };
     fetchReviews();
-  }, []);
+    fetchMovieDetails();
+  }, [movie_id]);
 
   const fetchMovieDetails = async () => {
     const tmdbUrl = `https://api.themoviedb.org/3/movie/${movie_id}?&api_key=fed7f31bd9b9809594103276b2560e2f&append_to_response=videos`;
@@ -190,6 +192,9 @@ const MovieDetails = () => {
         {HideReview && reviewConfirmation === true && (
           <UpdateReviewForm movie_id={movie_id} />
         )}
+      </div>
+      <div className="recommended-container">
+        <RecommendedList movie_id={movie_id}/>
       </div>
     </>
   );

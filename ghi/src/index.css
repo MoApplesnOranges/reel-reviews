@@ -57,6 +57,10 @@ h1 {
   height: 200px;
 }
 
+.recommended-container{
+  margin-top: 150px;
+}
+
 .search input {
   width: 100%;
   padding: 15px 25px;

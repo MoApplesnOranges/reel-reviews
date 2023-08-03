@@ -3,31 +3,34 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./index.css";
 
-function NewReleasesList() {
-  const [newReleaseMovies, setNewReleaseMovies] = useState([]);
+function RecommendedList({movie_id}) {
+  const [recommendations, setRecommendations ] = useState([]);
 
-  const fetchNewReleaseData = async () => {
-    const url =
-      "https://api.themoviedb.org/3/movie/now_playing?api_key=fed7f31bd9b9809594103276b2560e2f";
+
+  const fetchRecommendationsData = async () => {
+    const url = `https://api.themoviedb.org/3/movie/${movie_id}/recommendations?language=en-US&page=1&api_key=fed7f31bd9b9809594103276b2560e2f`
+
     const response = await fetch(url);
     if (response.ok) {
       const data = await response.json();
-      setNewReleaseMovies(data.results);
+      setRecommendations(data.results.filter(movie => movie.poster_path));
     }
   };
 
   useEffect(() => {
-    fetchNewReleaseData();
-  }, []);
+    fetchRecommendationsData();
+  }, [movie_id]);
 
   return (
     <>
+    {recommendations.length > 0 && (
+    <>
       <div>
-        <h2 className="text-center text-light">New Releases</h2>
+        <h2 className="text-center text-light">Recommended</h2>
       </div>
       <div className="container-fluid movie-row">
         <div className="row">
-          {newReleaseMovies.map((movie) => (
+          {recommendations.map((movie) => (
             <div
               key={movie.id}
               className="col d-flex justify-content-start m-1"
@@ -54,8 +57,10 @@ function NewReleasesList() {
           ))}
         </div>
       </div>
+      </>
+      )}
     </>
   );
 }
 
-export default NewReleasesList;
+export default RecommendedList;
