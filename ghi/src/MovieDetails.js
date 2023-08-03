@@ -3,15 +3,20 @@ import { useParams } from 'react-router-dom';
 import './index.css';
 import ReviewForm from './ReviewForm';
 import UpdateReviewForm from './UpdateReviewForm';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 const MovieDetails = () => {
   const [movieDetails, setMovieDetails] = useState({});
   const [HideReview, setHideReview] = useState(false);
   const [reviewConfirmation, setReviewConfirmation] = useState(false);
   const [review, setReviewData] = useState([]);
-
   const [trailer, setTrailer] = useState('');
   const { movie_id } = useParams();
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -135,6 +140,18 @@ const MovieDetails = () => {
             <br />
             Metascore: {movieDetails.Metascore}
           </p>
+          {HideReview && reviewConfirmation === false && (
+            <Button variant='primary' onClick={handleShow}>
+              Leave a Reel Review!
+            </Button>
+          )}
+          ;
+          {HideReview && reviewConfirmation === true && (
+            <Button variant='primary' onClick={handleShow}>
+              Update your Reel Review!
+            </Button>
+          )}
+          ;
         </div>
       </div>
       <div className='videoPlayer'>
@@ -150,7 +167,7 @@ const MovieDetails = () => {
         </div>
       </div>
       <div>
-        <div className="reviews-background">
+        <div className='reviews-background'>
           <h2 className='review-header'>Reviews</h2>
           <table>
             <thead>
@@ -167,12 +184,12 @@ const MovieDetails = () => {
                 <tr
                   key={index}
                   style={{
-                    color: reviews.rating === true ? "green" : "red",
+                    color: reviews.rating === true ? 'green' : 'red',
                   }}
                 >
                   <td>{reviews.title}</td>
                   <td>{reviews.body}</td>
-                  <td>{reviews.rating ? "Positive" : "Negative"}</td>
+                  <td>{reviews.rating ? 'Positive' : 'Negative'}</td>
                   <td>{reviews.username}</td>
                   <td>{new Date(reviews.posted_time).toLocaleString()}</td>
                 </tr>
@@ -183,12 +200,36 @@ const MovieDetails = () => {
       </div>
       <div>
         {HideReview && reviewConfirmation === false && (
-          <ReviewForm movie_id={movie_id} />
+          <Modal
+            show={show}
+            onHide={handleClose}
+            dialogClassName='modal-100w'
+            aria-labelledby='example-custom-modal-styling-title'
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Leave a Review</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <ReviewForm movie_id={movie_id} />
+            </Modal.Body>
+          </Modal>
         )}
       </div>
       <div>
         {HideReview && reviewConfirmation === true && (
-          <UpdateReviewForm movie_id={movie_id} />
+          <Modal
+            show={show}
+            onHide={handleClose}
+            dialogClassName='modal-100w'
+            aria-labelledby='example-custom-modal-styling-title'
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Update Review</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <UpdateReviewForm movie_id={movie_id} />
+            </Modal.Body>
+          </Modal>
         )}
       </div>
     </>

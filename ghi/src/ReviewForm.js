@@ -83,65 +83,65 @@ function ReviewForm(props) {
   }, []);
 
   return (
-    <div className='row'>
-      <div className='offset-3 col-6'>
-        <div className='shadow p-4 mt-4'>
-          <h1 style={{ color: 'white' }}>Post a new Review</h1>
-          <form onSubmit={handleSubmit} id='create-review-form'>
-            <div className='form-floating mb-3'>
-              <input
-                onChange={handleFormChange}
-                value={formData.title}
-                placeholder='Title'
-                required
-                type='text'
-                name='title'
-                id='title'
-                className='form-control'
-              />
-              <label htmlFor='title'>Title</label>
-            </div>
-            <div className='form-floating mb-3'>
-              <input
-                onChange={handleFormChange}
-                value={formData.body}
-                placeholder='Body'
-                required
-                type='body'
-                name='body'
-                id='body'
-                className='form-control'
-              />
-              <label htmlFor='body'>Body</label>
-            </div>
-            <div className='mb-3'>
-              <Form.Check
-                className='like-button'
-                type='radio'
-                name='rating'
-                required
-                label='Like'
-                value='true'
-                checked={formData.rating}
-                onChange={handleRating}
-              />
-
-              <Form.Check
-                className='dislike-button'
-                type='radio'
-                name='rating'
-                required
-                label='Dislike'
-                value='false'
-                checked={formData.rating === false}
-                onChange={handleRating}
-              />
-            </div>
-            <button className='btn btn-primary'>Create</button>
-          </form>
-        </div>
+    // <div className='row'>
+    //   <div className='offset-3 col-6'>
+    //     <div className='shadow p-4 mt-4'>
+    //       <h1 style={{ color: 'white' }}>Post a new Review</h1>
+    <form onSubmit={handleSubmit} id='create-review-form'>
+      <div className='form-floating mb-3'>
+        <input
+          onChange={handleFormChange}
+          value={formData.title}
+          placeholder='Title'
+          required
+          type='text'
+          name='title'
+          id='title'
+          className='form-control'
+        />
+        <label htmlFor='title'>Title</label>
       </div>
-    </div>
+      <div className='form-floating mb-3'>
+        <input
+          onChange={handleFormChange}
+          value={formData.body}
+          placeholder='Body'
+          required
+          type='body'
+          name='body'
+          id='body'
+          className='form-control'
+        />
+        <label htmlFor='body'>Body</label>
+      </div>
+      <div className='mb-3'>
+        <Form.Check
+          className='like-button'
+          type='radio'
+          name='rating'
+          required
+          label='Like'
+          value='true'
+          checked={formData.rating}
+          onChange={handleRating}
+        />
+
+        <Form.Check
+          className='dislike-button'
+          type='radio'
+          name='rating'
+          required
+          label='Dislike'
+          value='false'
+          checked={formData.rating === false}
+          onChange={handleRating}
+        />
+      </div>
+      <button className='btn btn-primary'>Create</button>
+    </form>
+    //     </div>
+    //   </div>
+    // </div>
   );
 }
 

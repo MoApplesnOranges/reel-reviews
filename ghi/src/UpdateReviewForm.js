@@ -93,63 +93,65 @@ function UpdateReviewForm(props) {
   };
 
   return (
-    <div>
-      <div className='offset-3 col-6'>
-        <div className='shadow p-4 mt-4'>
-          <h1 style={{ color: 'white' }}>Update Review</h1>
-          <form onSubmit={handleSubmit} id='create-review-form'>
-            <div className='form-floating mb-3'>
-              <input
-                onChange={handleFormChange}
-                value={formData.title}
-                placeholder='Title'
-                required
-                type='text'
-                name='title'
-                id='title'
-                className='form-control'
-              />
-              <label htmlFor='title'>Title</label>
-            </div>
-            <div className='form-floating mb-3'>
-              <textarea
-                onChange={handleFormChange}
-                value={formData.body}
-                placeholder='Body'
-                required
-                type='body'
-                name='body'
-                id='body'
-                className='form-control'
-              ></textarea>
-              <label htmlFor='body'>Body</label>
-            </div>
-            <div className='mb-3' style={{ color: 'white' }}>
-              <Form.Check
-                type='radio'
-                name='rating'
-                required
-                label='Like'
-                value='true'
-                checked={formData.rating}
-                onChange={handleRating}
-              />
-
-              <Form.Check
-                type='radio'
-                name='rating'
-                required
-                label='Dislike'
-                value='false'
-                checked={formData.rating === false}
-                onChange={handleRating}
-              />
-            </div>
-            <button className='btn btn-primary'>Update</button>
-          </form>
-        </div>
+    // <div>
+    //   <div className='offset-3 col-6'>
+    //     <div className='shadow p-4 mt-4'>
+    //       <h1 style={{ color: 'white' }}>Update Review</h1>
+    <form onSubmit={handleSubmit} id='create-review-form'>
+      <div className='form-floating mb-3'>
+        <input
+          onChange={handleFormChange}
+          value={formData.title}
+          placeholder='Title'
+          required
+          type='text'
+          name='title'
+          id='title'
+          className='form-control'
+        />
+        <label htmlFor='title'>Title</label>
       </div>
-    </div>
+      <div className='form-floating mb-3'>
+        <textarea
+          onChange={handleFormChange}
+          value={formData.body}
+          placeholder='Body'
+          required
+          type='body'
+          name='body'
+          id='body'
+          className='form-control'
+        ></textarea>
+        <label htmlFor='body'>Body</label>
+      </div>
+      <div className='mb-3' style={{ color: 'white' }}>
+        <Form.Check
+          className='like-button'
+          type='radio'
+          name='rating'
+          required
+          label='Like'
+          value='true'
+          checked={formData.rating}
+          onChange={handleRating}
+        />
+
+        <Form.Check
+          className='dislike-button'
+          type='radio'
+          name='rating'
+          required
+          label='Dislike'
+          value='false'
+          checked={formData.rating === false}
+          onChange={handleRating}
+        />
+      </div>
+      <button className='btn btn-primary'>Update</button>
+    </form>
+    //     </div>
+    //   </div>
+    // </div>
   );
 }
 
