@@ -73,8 +73,8 @@ build-front-end-job:
 # Deploy the React/JavaScript front-end to GitLab pages
 pages:
   stage: deploy
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  # rules:
+  #   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   dependencies:
     - build-front-end-job
   needs:
@@ -82,5 +82,4 @@ pages:
   script:
     - mv ghi/build/ public
   artifacts:
-    paths:
-      - public
+    paths: [public]
