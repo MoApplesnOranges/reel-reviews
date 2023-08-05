@@ -7,8 +7,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.avatar-and-username, .reviews-background {
+.avatar-and-username,
+.reviews-background {
   background: rgba(0, 0, 0, 0.65);
+  width: fit-content;
+  margin: 0 auto;
 }
 
 code {
@@ -177,7 +180,8 @@ th {
 
 .review-header {
   text-align: center;
-  color: blue;
+  color: red;
+  font-weight: bold;
 }
 
 .like-button {
@@ -195,4 +199,89 @@ th {
 
 #dropdown-genres {
   margin-top: 30px;
+}
+
+.search-box {
+  margin-top: 0px;
+  padding-top: 63px;
+  z-index: 2;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+}
+
+.searchInputs {
+  width: 800px;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+}
+
+.movie-inputs {
+  margin-bottom: 0px;
+}
+
+.searchIcon {
+  display: grid;
+  place-items: center;
+}
+
+.dataResult {
+  margin-top: 0px;
+  width: 800px;
+  height: 450px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  overflow: hidden;
+  overflow-y: auto;
+  position: absolute;
+  top: 100%;
+  left: 5;
+  z-index: 10;
+  background-image: url("https://i.pinimg.com/564x/b4/29/03/b42903bb925c000138e256ad46b400f6.jpg");
+}
+
+.dataResult::-webkit-scrollbar {
+  display: none;
+}
+
+.movie-image-dropdown {
+  width: 120px;
+  height: auto;
+}
+
+.movie-image {
+  width: 10%;
+  height: auto;
+}
+
+.movie-columns {
+  align-items: center;
+  width: 100%;
+  border-bottom: black;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
+}
+
+.movie-title-link {
+  text-decoration: none;
+  color: darkgreen;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.release-date {
+  font-style: italic;
+}
+
+.navbar {
+  position: relative;
+  z-index: 1;
+}
+
+.close-button {
+  z-index: 100;
+  position: sticky;
+  margin-left: 95%;
+  margin-top: 5px;
+  top: 5px;
 }
