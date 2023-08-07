@@ -4,7 +4,6 @@ import React, { useEffect, useState, useContext } from "react";
 import { Dropdown, Navbar } from "react-bootstrap";
 import TokenContext from "./TokenContext";
 import SearchBar from "./SearchBar";
-import SearchIcon from "@mui/icons-material/Search";
 
 function Nav() {
   const [Hidelogin, setHidelogin] = useContext(TokenContext);
@@ -31,7 +30,7 @@ function Nav() {
       }
     };
     fetchToken();
-  }, []);
+  }, [setHidelogin]);
 
   return (
     <Navbar className="navbar navbar-expand-lg navbar-dark bg-dark">

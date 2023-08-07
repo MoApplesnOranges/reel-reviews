@@ -1,6 +1,6 @@
-import { useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import TokenContext from './TokenContext';
+import { useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import TokenContext from "./TokenContext";
 
 function Logout() {
   const [Hidelogin, setHidelogin] = useContext(TokenContext);
@@ -8,22 +8,22 @@ function Logout() {
 
   useEffect(() => {
     const handleLogout = async () => {
-      const url = 'http://localhost:8000/token';
+      const url = "http://localhost:8000/token";
       const fetchConfig = {
-        method: 'DELETE',
-        credentials: 'include',
+        method: "DELETE",
+        credentials: "include",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       };
       const response = await fetch(url, fetchConfig);
       if (response.ok) {
         setHidelogin(true);
-        navigate('/');
+        navigate("/");
       }
     };
     handleLogout();
-  }, [setHidelogin, navigate]);
+  }, [setHidelogin, navigate, Hidelogin]);
 
   return null;
 }

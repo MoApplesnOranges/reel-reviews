@@ -6,17 +6,19 @@ function SearchMovies() {
   const [movies, setMovies] = useState([]);
   const [search, setSearch] = useState("");
 
-  const movieSearch = async (search) => {
-    const url = `https://api.themoviedb.org/3/search/movie?query=${search}&include_adult=false&api_key=fed7f31bd9b9809594103276b2560e2f`;
+  useEffect(() => {
+    const movieSearch = async (search) => {
+      const url = `https://api.themoviedb.org/3/search/movie?query=${search}&include_adult=false&api_key=fed7f31bd9b9809594103276b2560e2f`;
 
-    const response = await fetch(url);
-    const data = await response.json();
+      const response = await fetch(url);
+      const data = await response.json();
 
-    if (data.results) {
-      setMovies(data.results);
-    }
-    console.log(movies);
-  };
+      if (data.results) {
+        setMovies(data.results);
+      }
+    };
+    movieSearch(search);
+  }, [search]);
 
   const MovieList = (props) => {
     return (
@@ -44,10 +46,6 @@ function SearchMovies() {
       </>
     );
   };
-
-  useEffect(() => {
-    movieSearch(search);
-  }, [search]);
 
   return (
     <>

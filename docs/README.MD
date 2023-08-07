@@ -4,10 +4,10 @@ Please put any and all documentation for your project in this folder. Other than
 
 # Reel Reviews
 
+- Will Mo
 - Nick Ignatovich
 - Jonah Han
 - Kevin Almonte
-- Will Mo
 
 # Intended Market
 
@@ -33,7 +33,6 @@ of our evergrowing community.
 
 - Add about me section to profile page
   - Ability to update profile information
-- Add searchbar functionality to navbar
 - Ability to create personal movie lists (watch later, etc...)
 - Ability to search for users / follow users
   - Activity feed to track reviews left by followed users
@@ -54,7 +53,10 @@ To start leaving your hot takes on Reel Reviews, follow these steps:
 
 1. Clone the repository down to your local machine
 2. Navigate into the new project directory in your terminal
-3. Run `docker volume create pg_admin` and `docker volume create postgres-data`
+3. Run `docker volume create pg-admin` and `docker volume create postgres-data`
+
+cd into ghi directory, run `npm install @mui/icons-material @mui/material @emotion/styled @emotion/react`
+
 4. Run `docker compose build`
 5. Run `docker compose up`
 6. Navigate to http://localhost:3000 in your broswer
