@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/reel-reviews/static/css/main.c38ac2d0.css",
+    "main.js": "/reel-reviews/static/js/main.bcd1e2bf.js",
+    "index.html": "/reel-reviews/index.html",
+    "main.c38ac2d0.css.map": "/reel-reviews/static/css/main.c38ac2d0.css.map",
+    "main.bcd1e2bf.js.map": "/reel-reviews/static/js/main.bcd1e2bf.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c38ac2d0.css",
+    "static/js/main.bcd1e2bf.js"
+  ]
+}
