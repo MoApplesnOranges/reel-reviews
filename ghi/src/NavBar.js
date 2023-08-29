@@ -30,7 +30,7 @@ function Nav() {
       }
     };
     fetchToken();
-  }, []);
+  }, [setHidelogin]);
 
   return (
     <Navbar className="navbar navbar-expand-lg navbar-dark bg-dark">
