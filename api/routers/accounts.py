@@ -72,11 +72,11 @@ async def create_account(
 # requiring a valid token for accounts
 @router.get("/api/accounts/all")
 async def retrieve_all_accounts(
-    account_data: dict = Depends(authenticator.get_current_account_data),
+    # account_data: dict = Depends(authenticator.get_current_account_data),
     repo: AccountRepository = Depends(),
 ):
-    if account_data:
-        return repo.get_all_accounts()
+    # if account_data:
+    return repo.get_all_accounts()
 
 
 @router.get(
