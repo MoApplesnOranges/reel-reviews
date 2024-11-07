@@ -54,7 +54,7 @@ To start leaving your hot takes on Reel Reviews, follow these steps:
 
 1. Clone the repository down to your local machine
 2. Navigate into the new project directory in your terminal
-3. Run `docker volume create pg_admin` and `docker volume create postgres-data`
+3. Run `docker volume create pg-admin` and `docker volume create postgres-data`
 4. Run `docker compose build`
 5. Run `docker compose up`
 6. Navigate to http://localhost:3000 in your broswer

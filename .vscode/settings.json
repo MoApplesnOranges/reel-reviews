@@ -3,7 +3,7 @@
   "python.formatting.provider": "none",
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "[python]": {
+  "[python3]": {
     "editor.defaultFormatter": "ms-python.black-formatter"
   }
 }

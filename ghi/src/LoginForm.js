@@ -1,4 +1,3 @@
-import useToken from "@galvanize-inc/jwtdown-for-react";
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import TokenContext from "./TokenContext";
@@ -8,8 +7,6 @@ const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [usernames, setUsernames] = useState("");
-  const [token, setToken] = useState(null);
-  const { login } = useToken();
   const navigate = useNavigate();
 
   const fetchUsers = async () => {
@@ -28,24 +25,32 @@ const LoginForm = () => {
     });
   };
 
+  const Login = async () => {
+    const url = "http://localhost:8000/token"; // replace with actual login endpoint
+    const formData = new FormData();
+    formData.append("username", username);
+    formData.append("password", password);
+    const loginConfig = {
+      method: "POST",
+      credentials: "include", // Ensures cookies are stored for subsequent requests
+      body: formData, // Adjust based on expected payload format
+    };
+    const response = await fetch(url, loginConfig);
+    if (response.ok) {
+      console.log("Login successful");
+      console.log(response);
+      const responseJSON = await response.json();
+      console.log(`This is the token ${responseJSON.access_token}`);
+      return true;
+    } else {
+      console.error("Login failed", response.status);
+      return false;
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
   }, []);
-
-  // const getToken = async () => {
-  //   const url = "http://localhost:8000/token";
-  //   const fetchConfig = {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     credentials: "include",
-  //   };
-  //   const response = await fetch(url, fetchConfig);
-  //   const tokenData = await response.json();
-  //   setToken(tokenData);
-  //   console.log(token);
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,70 +58,20 @@ const LoginForm = () => {
       alert("Please login with a registered username.");
       return;
     } else {
-      login(username, password).then(() => {
-        (async () => {
-          const url = "http://localhost:8000/token";
-          const fetchConfig = {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          };
-          const response = await fetch(url, fetchConfig);
-          const tokenData = await response.json();
-
-          if (tokenData === null) {
-            const url = "http://localhost:8000/token";
-            const fetchConfig = {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              credentials: "include",
-            };
-            const response = await fetch(url, fetchConfig);
-            const token = await response.json();
-            if (token === null) {
-              alert("Incorrect username and password. Try again");
-            } else {
-              e.target.reset();
-              navigate("/");
-              setHidelogin(false);
-              if (!Hidelogin) {
-                navigate("/");
-              }
-            }
-          }
-        })();
-      });
+      const loginSuccess = await Login();
+      if (!loginSuccess) {
+        alert("Incorrect username and password. Try again");
+        return;
+      } else {
+        e.target.reset();
+        navigate("/");
+        setHidelogin(false);
+        if (!Hidelogin) {
+          navigate("/");
+        }
+      }
     }
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (!usernames.includes(username)) {
-  //     alert("Please login with a registered username.");
-  //     return;
-  //   } else {
-  //     await login(username, password);
-  //     await getToken();
-  //     if (token === null) {
-  //       await login(username, password);
-  //       await getToken();
-  //       if (token === null) {
-  //         alert("Incorrect username and password. Try again");
-  //       } else {
-  //         e.target.reset();
-  //         navigate("/");
-  //         setHidelogin(false);
-  //         if (!Hidelogin) {
-  //           navigate("/");
-  //         }
-  //       }
-  //     }
-  //   }
-  // };
 
   return (
     <div className="card text-bg-light mb-3">

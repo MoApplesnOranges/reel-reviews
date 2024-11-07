@@ -37,5 +37,7 @@ class MyAuthenticator(Authenticator):
         # You must return TWO values from this method.
         return account.username, AccountOut(**account.dict())
 
+authenticator = MyAuthenticator(os.environ.get("SIGNING_KEY"))
 
-authenticator = MyAuthenticator(os.environ["SIGNING_KEY"])
+if authenticator is None:
+    raise ValueError("Environment variable SIGNING_KEY is not set")

@@ -6,6 +6,7 @@ from fastapi import (
     status,
     Request,
 )
+import logging
 from typing import Optional, Union
 from jwtdown_fastapi.authentication import Token
 from jwtdownAPI.authenticator import authenticator
@@ -19,7 +20,8 @@ from queries.accounts import (
 )
 
 router = APIRouter()
-
+logger = logging.getLogger('uvicorn.error')
+logger.setLevel(logging.DEBUG)
 
 class AccountForm(BaseModel):
     username: str
@@ -33,19 +35,33 @@ class AccountToken(Token):
 class HttpError(BaseModel):
     detail: str
 
+@router.get("/hello")
+async def read_hello():
+    logger.debug("Hello Qiu")
+    return {"message": "Hello, World!"}
 
-@router.get("/token", response_model=AccountToken | None)
+
+@router.get("/token")
 async def get_token(
     request: Request,
     account: AccountIn = Depends(authenticator.try_get_current_account_data),
 ) -> AccountToken | None:
+
+    logger.debug(request.cookies)
+    logger.debug(authenticator.cookie_name)
+    logger.debug(account)
+    logger.debug(AccountIn)
+    logger.debug(authenticator.try_get_current_account_data)
+    logger.debug(AccountToken)
+
     if account and authenticator.cookie_name in request.cookies:
         return {
             "access_token": request.cookies[authenticator.cookie_name],
             "type": "Bearer",
             "account": account,
         }
-
+    # else:
+    #     raise HTTPException(status_code=401, detail="Unauthorized")
 
 @router.post("/api/accounts", response_model=AccountToken | HttpError)
 async def create_account(
@@ -64,8 +80,10 @@ async def create_account(
         )
     form = AccountForm(username=info.username, password=info.password)
     print(form)
+    logger.debug(form)
     token = await authenticator.login(response, request, form, repo)
     print(token)
+    logger.debug(token)
     return AccountToken(account=account, **token.dict())
 
 
