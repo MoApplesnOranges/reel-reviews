@@ -37,10 +37,6 @@ const LoginForm = () => {
     };
     const response = await fetch(url, loginConfig);
     if (response.ok) {
-      console.log("Login successful");
-      console.log(response);
-      const responseJSON = await response.json();
-      console.log(`This is the token ${responseJSON.access_token}`);
       return true;
     } else {
       console.error("Login failed", response.status);

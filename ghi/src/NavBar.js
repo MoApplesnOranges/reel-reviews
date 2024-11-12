@@ -21,16 +21,17 @@ function Nav() {
       };
       const response = await fetch(url, fetchConfig);
       const tokenData = await response.json();
-      setUser(tokenData.account);
 
       if (tokenData === null) {
         setHidelogin(true);
       } else {
         setHidelogin(false);
+        setUser(tokenData.account);
+        console.log(user);
       }
     };
     fetchToken();
-  }, [setHidelogin]);
+  }, [Hidelogin]);
 
   return (
     <Navbar className="navbar navbar-expand-lg navbar-dark bg-dark">

@@ -1,6 +1,10 @@
 from pydantic import BaseModel
 from typing import List, Optional, Union
 from queries.pool import pool
+import logging
+
+logger = logging.getLogger('uvicorn.error')
+logger.setLevel(logging.DEBUG)
 
 
 class DuplicateAccountError(BaseModel):
@@ -35,6 +39,9 @@ class AccountOut(BaseModel):
 class AccountOutWithPassword(AccountOut):
     hashed_password: str
 
+class AccountUpdateWithPassword(AccountUpdate):
+    hashed_password: str
+
 
 class AccountRepository:
     def create(
@@ -65,8 +72,9 @@ class AccountRepository:
 
     def update(
         self, account_id: int, account: AccountUpdate, hashed_password: str
-    ) -> Union[AccountOutWithPassword, Error]:
+    ) -> Union[AccountUpdateWithPassword, Error]:
         try:
+            logger.debug(f"this account: {account}")
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     db.execute(
@@ -77,6 +85,7 @@ class AccountRepository:
                             , hashed_password = %s
                             , avatar = %s
                         WHERE id = %s
+                        RETURNING id;
                         """,
                         [
                             account.username,
@@ -86,9 +95,10 @@ class AccountRepository:
                             account_id,
                         ],
                     )
-                    return self.updated_account_in_to_out(account_id, account)
-        except Exception:
-            return {"message": "Could not update that account"}
+                    return self.updated_account_in_to_out(account_id, account, hashed_password)
+        except Exception as e:
+            return Error(message="Could not update account", details=str(e))
+
 
     def get_one_account(
         self, username: str
@@ -150,9 +160,10 @@ class AccountRepository:
         except Exception:
             return False
 
-    def updated_account_in_to_out(self, id: int, account: AccountUpdate):
+    def updated_account_in_to_out(self, account_id: int, account: AccountUpdate, hashed_password: str):
         old_data = account.dict()
-        return AccountOut(id=id, **old_data)
+        logger.debug(old_data)
+        return AccountUpdateWithPassword(account_id=account_id, **old_data, hashed_password=hashed_password)
 
     def account_in_to_out(self, id: int, account: AccountIn):
         old_data = account.dict()

@@ -16,7 +16,7 @@ from queries.accounts import (
     AccountIn,
     AccountOut,
     AccountRepository,
-    Error,
+    AccountOutWithPassword
 )
 
 router = APIRouter()
@@ -31,9 +31,22 @@ class AccountForm(BaseModel):
 class AccountToken(Token):
     account: AccountOut
 
+class AccountUpdate(BaseModel):
+    username: Optional[str]
+    email: Optional[str]
+    password: Optional[str]
+    avatar: Optional[str]
+
+class AccountUpdateWithPassword(AccountUpdate):
+    hashed_password: str
+
 
 class HttpError(BaseModel):
     detail: str
+
+class Error(BaseModel):
+    message: str
+
 
 @router.get("/hello")
 async def read_hello():
@@ -114,18 +127,19 @@ async def get_one_account(
 
 
 @router.put(
-    "/api/accounts/{account_id}", response_model=Union[AccountOut, Error]
+    "/api/accounts/{account_id}", response_model=AccountUpdateWithPassword
 )
 async def update_account(
     account_id: int,
-    account: AccountIn,
+    account: AccountUpdate,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: AccountRepository = Depends(),
-) -> Union[AccountOut, Error]:
+):
     hashed_password = authenticator.hash_password(account.password)
+    logger.debug(f"{hashed_password}")
+    logger.debug(f"This is account: {account}")
     if account_data:
         return repo.update(account_id, account, hashed_password)
-
 
 @router.delete("/api/accounts/{account_id}", response_model=bool)
 async def delete_account(
