@@ -27,7 +27,6 @@ function Nav() {
       } else {
         setHidelogin(false);
         setUser(tokenData.account);
-        console.log(user);
       }
     };
     fetchToken();
@@ -155,6 +154,13 @@ function Nav() {
               {!Hidelogin && (
                 <NavLink to="/logout" className="btn btn-danger mx-1">
                   Logout
+                </NavLink>
+              )}
+            </li>
+            <li className="navbar-item">
+              {!Hidelogin && (
+                <NavLink to="/updateProfile" className="btn btn-info mx-1">
+                  Update Profile
                 </NavLink>
               )}
             </li>

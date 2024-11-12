@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState({});
+  const [avatar, setAvatar] = useState("");
   const [reviews, setReviews] = useState([]);
   const [movie, setMovie] = useState([]);
 
@@ -19,6 +20,7 @@ const ProfilePage = () => {
     const response = await fetch(tokenUrl, fetchConfig);
     const data = await response.json();
     setProfile(data.account);
+    console.log(data);
   };
 
   const fetchReviewData = async () => {
@@ -53,10 +55,7 @@ const ProfilePage = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      await fetchProfileData();
-    };
-    fetchData();
+    fetchProfileData();
   }, []);
 
   useEffect(() => {

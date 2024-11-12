@@ -30,6 +30,7 @@ import Logout from "./Logout";
 import TokenContext from "./TokenContext";
 import ReviewForm from "./ReviewForm";
 import ProfilePage from "./ProfilePage";
+import UpdateProfile from "./updateProfile.js";
 
 function App(props) {
   const [Hidelogin, setHidelogin] = useState(true);
@@ -76,6 +77,7 @@ function App(props) {
               <Route path="/movie/:movie_id" element={<MovieDetails />} />
               <Route path="/:username" element={<ProfilePage />} />
               <Route path="/reviews" element={<ReviewForm />} />
+              <Route path="/updateProfile" element={<UpdateProfile />} />
               <Route
                 path="/genres/action"
                 element={<Action actionData={props.action} />}
