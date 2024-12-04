@@ -23,6 +23,7 @@ router = APIRouter()
 logger = logging.getLogger('uvicorn.error')
 logger.setLevel(logging.DEBUG)
 
+
 class AccountForm(BaseModel):
     username: str
     password: str
@@ -31,11 +32,13 @@ class AccountForm(BaseModel):
 class AccountToken(Token):
     account: AccountOut
 
+
 class AccountUpdate(BaseModel):
     username: Optional[str]
     email: Optional[str]
     password: Optional[str]
     avatar: Optional[str]
+
 
 class AccountUpdateWithPassword(AccountUpdate):
     hashed_password: str
@@ -44,14 +47,9 @@ class AccountUpdateWithPassword(AccountUpdate):
 class HttpError(BaseModel):
     detail: str
 
+
 class Error(BaseModel):
     message: str
-
-
-@router.get("/hello")
-async def read_hello():
-    logger.debug("Hello Qiu")
-    return {"message": "Hello, World!"}
 
 
 @router.get("/token")
